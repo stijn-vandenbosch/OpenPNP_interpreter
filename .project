@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>OpenPNP_Interpreter</name>
-	<comment></comment>
+	<name>LCD_LwIP</name>
+	<comment />
 	<projects>
 	</projects>
 	<buildSpec>

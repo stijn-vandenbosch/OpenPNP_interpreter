@@ -4,49 +4,19 @@
   * Description        : This file provides initialization code for LWIP
   *                      middleWare.
   ******************************************************************************
-  * This notice applies to any and all portions of this file
-  * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
-  * inserted by the user or by software development tools
-  * are owned by their respective copyright owners.
+  * @attention
   *
-  * Copyright (c) 2018 STMicroelectronics International N.V. 
-  * All rights reserved.
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * All rights reserved.</center></h2>
   *
-  * Redistribution and use in source and binary forms, with or without 
-  * modification, are permitted, provided that the following conditions are met:
-  *
-  * 1. Redistribution of source code must retain the above copyright notice, 
-  *    this list of conditions and the following disclaimer.
-  * 2. Redistributions in binary form must reproduce the above copyright notice,
-  *    this list of conditions and the following disclaimer in the documentation
-  *    and/or other materials provided with the distribution.
-  * 3. Neither the name of STMicroelectronics nor the names of other 
-  *    contributors to this software may be used to endorse or promote products 
-  *    derived from this software without specific written permission.
-  * 4. This software, including modifications and/or derivative works of this 
-  *    software, must execute solely and exclusively on microcontroller or
-  *    microprocessor devices manufactured by or for STMicroelectronics.
-  * 5. Redistribution and use of this software other than as permitted under 
-  *    this license is void and will automatically terminate your rights under 
-  *    this license. 
-  *
-  * THIS SOFTWARE IS PROVIDED BY STMICROELECTRONICS AND CONTRIBUTORS "AS IS" 
-  * AND ANY EXPRESS, IMPLIED OR STATUTORY WARRANTIES, INCLUDING, BUT NOT 
-  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
-  * PARTICULAR PURPOSE AND NON-INFRINGEMENT OF THIRD PARTY INTELLECTUAL PROPERTY
-  * RIGHTS ARE DISCLAIMED TO THE FULLEST EXTENT PERMITTED BY LAW. IN NO EVENT 
-  * SHALL STMICROELECTRONICS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
-  * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
-  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  * This software component is licensed by ST under Ultimate Liberty license
+  * SLA0044, the "License"; You may not use this file except in compliance with
+  * the License. You may obtain a copy of the License at:
+  *                             www.st.com/SLA0044
   *
   ******************************************************************************
   */
-  
+
 /* Includes ------------------------------------------------------------------*/
 #include "lwip.h"
 #include "lwip/init.h"
@@ -54,13 +24,14 @@
 #if defined ( __CC_ARM )  /* MDK ARM Compiler */
 #include "lwip/sio.h"
 #endif /* MDK ARM Compiler */
+#include "ethernetif.h"
 
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
 /* Private function prototypes -----------------------------------------------*/
 /* ETH Variables initialization ----------------------------------------------*/
-void _Error_Handler(char * file, int line);
+void Error_Handler(void);
 
 /* USER CODE BEGIN 1 */
 
@@ -87,8 +58,8 @@ void MX_LWIP_Init(void)
   /* IP addresses initialization */
   IP_ADDRESS[0] = 192;
   IP_ADDRESS[1] = 168;
-  IP_ADDRESS[2] = 2;
-  IP_ADDRESS[3] = 69;
+  IP_ADDRESS[2] = 69;
+  IP_ADDRESS[3] = 10;
   NETMASK_ADDRESS[0] = 255;
   NETMASK_ADDRESS[1] = 255;
   NETMASK_ADDRESS[2] = 255;
@@ -97,7 +68,7 @@ void MX_LWIP_Init(void)
   GATEWAY_ADDRESS[1] = 0;
   GATEWAY_ADDRESS[2] = 0;
   GATEWAY_ADDRESS[3] = 0;
-  
+
   /* Initilialize the LwIP stack without RTOS */
   lwip_init();
 
@@ -123,6 +94,11 @@ void MX_LWIP_Init(void)
     netif_set_down(&gnetif);
   }
 
+  /* Set the link callback function, this function is called on change of link status*/
+  netif_set_link_callback(&gnetif, ethernetif_update_config);
+
+  /* Create the Ethernet link handler thread */
+
 /* USER CODE BEGIN 3 */
 
 /* USER CODE END 3 */
@@ -139,21 +115,21 @@ void MX_LWIP_Init(void)
  * ----------------------------------------------------------------------
  * Function given to help user to continue LwIP Initialization
  * Up to user to complete or change this function ...
- * Up to user to call this function in main.c in while (1) of main(void) 
+ * Up to user to call this function in main.c in while (1) of main(void)
  *-----------------------------------------------------------------------
- * Read a received packet from the Ethernet buffers 
+ * Read a received packet from the Ethernet buffers
  * Send it to the lwIP stack for handling
  * Handle timeouts if LWIP_TIMERS is set and without RTOS
- * Handle the llink status if LWIP_NETIF_LINK_CALLBACK is set and without RTOS 
+ * Handle the llink status if LWIP_NETIF_LINK_CALLBACK is set and without RTOS
  */
 void MX_LWIP_Process(void)
 {
 /* USER CODE BEGIN 4_1 */
 /* USER CODE END 4_1 */
   ethernetif_input(&gnetif);
-  
+
 /* USER CODE BEGIN 4_2 */
-/* USER CODE END 4_2 */  
+/* USER CODE END 4_2 */
   /* Handle timeouts */
   sys_check_timeouts();
 
@@ -175,7 +151,7 @@ sio_fd_t sio_open(u8_t devnum)
 /* USER CODE BEGIN 7 */
   sd = 0; // dummy code
 /* USER CODE END 7 */
-	
+
   return sd;
 }
 
@@ -210,7 +186,7 @@ u32_t sio_read(sio_fd_t fd, u8_t *data, u32_t len)
 
 /* USER CODE BEGIN 9 */
   recved_bytes = 0; // dummy code
-/* USER CODE END 9 */	
+/* USER CODE END 9 */
   return recved_bytes;
 }
 
@@ -229,7 +205,7 @@ u32_t sio_tryread(sio_fd_t fd, u8_t *data, u32_t len)
 
 /* USER CODE BEGIN 10 */
   recved_bytes = 0; // dummy code
-/* USER CODE END 10 */	
+/* USER CODE END 10 */
   return recved_bytes;
 }
 #endif /* MDK ARM Compiler */
