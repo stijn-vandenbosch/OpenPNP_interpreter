@@ -9,6 +9,6 @@
 #define COMS_H_
 
 void vComsInitListener(void);
-void vSetNewCommandCallback(void(*callBackFunction)(char *pcData));
+void vComsSetNewCommandCallback(void(*callBackFunction)(char *pcData));
 
 #endif /* COMS_H_ */

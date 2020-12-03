@@ -59,7 +59,6 @@ SDRAM_HandleTypeDef hsdram1;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-static const char *pcTitleMessage = "OpenPNP controller";
 static const char *pcHeading = "Current command:";
 /* USER CODE END PV */
 
@@ -72,6 +71,8 @@ static void MX_DMA2D_Init(void);
 static void MX_FMC_Init(void);
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
+
+void vMainNewDataCallback( char* pcNewCommand );
 
 /* USER CODE END PFP */
 
@@ -162,9 +163,6 @@ int main(void)
     /* Clear the foreground Layer */
     BSP_LCD_Clear( LCD_COLOR_WHITE);
 
-    /* Initialize the communication */
-    vComsInitListener();
-
     /* Display the logo */
     WDA_LCD_DrawBitmap( LOGO_DATA, 10, 5, LOGO_DATA_X_PIXEL, LOGO_DATA_Y_PIXEL, LOGO_DATA_FORMAT );
 
@@ -176,6 +174,12 @@ int main(void)
     /* Set the font and color for later */
     BSP_LCD_SetFont( &Font16 );
     BSP_LCD_SetTextColor( LCD_COLOR_BLACK );
+
+    /* Set the callback function for new data */
+    vComsSetNewCommandCallback( vMainNewDataCallback );
+
+    /* Initialize the communication */
+    vComsInitListener();
 
   /* USER CODE END 2 */
 
@@ -509,7 +513,12 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void vMainNewDataCallback( char* pcNewCommand )
+{
+	//printf( "Got to main!\r\nCommand: %s\r\n", pcNewCommand );
+	BSP_LCD_ClearStringLine( 6 );
+	BSP_LCD_DisplayStringAtLine( 6, (uint8_t*)pcNewCommand );
+}
 /* USER CODE END 4 */
 
 /**

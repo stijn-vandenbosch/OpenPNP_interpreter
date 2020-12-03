@@ -10,7 +10,7 @@
 #include <lwip/ip4_addr.h>
 #include <string.h>
 
-/* my includes *
+/* my includes */
 #include "coms.h"
 
 /* Defines */
@@ -21,15 +21,19 @@
 #define CLOSECONNECTIONCHAR 'X'	//close connection requested
 
 /* Static function prototypes */
+#ifdef DEBUG
 static void prvComsPrintMyIP(void);
+#endif
 static err_t prvComsAcceptCallback (void *arg, struct tcp_pcb *newpcb, err_t err);
 static void prvComsErrorCallback(void *arg, err_t err);
 static err_t prvComsDataReceivedCallback(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err);
 static void prvCloseConnection( struct tcp_pcb* pxPcbToClose);
 
 /* Static and external variables */
+#ifdef DEBUG
 extern uint8_t IP_ADDRESS[4];		//initialized in lwip.c
 extern ip4_addr_t ipaddr;			//initialized in lwip.c
+#endif
 static char cCommandbuffer[BUFFERSIZE];	//global buffer to store the received command
 static const char *pcResponseString = "ok.\r\n";
 static void (*newDataCallback)(char *pcData) = NULL;
@@ -43,11 +47,15 @@ static void (*newDataCallback)(char *pcData) = NULL;
 void vComsInitListener(void)
 {
 struct tcp_pcb *pxMyTcpPcb = NULL;	//new pointer to a protocol control block
+#ifdef DEBUG
 err_t eBindStatus = ERR_VAL;
+#endif
 
 	/* create the new listener */
 	pxMyTcpPcb = tcp_new();
+#ifdef DEBUG
 	eBindStatus = tcp_bind( pxMyTcpPcb, &ipaddr, (uint16_t)PORT );
+#endif
 	pxMyTcpPcb = tcp_listen( pxMyTcpPcb );
 
 	/* specify callback */
@@ -76,7 +84,7 @@ err_t eBindStatus = ERR_VAL;
 #endif
 }
 /*--------------------------------------------------------------------------*/
-
+#ifdef DEBUG
 /*
  * print the local IP address
  */
@@ -84,6 +92,7 @@ static void prvComsPrintMyIP(void)
 {
 	printf("%hd.%hd.%hd.%hd",(uint16_t)IP_ADDRESS[0],(uint16_t)IP_ADDRESS[1],(uint16_t)IP_ADDRESS[2],(uint16_t)IP_ADDRESS[3]);
 }
+#endif
 /*--------------------------------------------------------------------------*/
 
 /*
@@ -143,6 +152,7 @@ char *pcCurrentPayload = NULL;
 		tcp_recved( tpcb, p->tot_len ); //ack packet
 
 		/* Payload handling starts here */
+		pcCurrentPayload = (char*)p->payload;
 		usTotalLength = p->tot_len;	//store the total length
 
 		pxCurrentBuf = p;			//start with first pbuf
@@ -153,7 +163,7 @@ char *pcCurrentPayload = NULL;
 		 * 'end of command' character before overwriting
 		 * the command buffer
 		 */
-		if( ( (char*)pxCurrentBuf->payload[0] ) == ENDOFCOMMANDCHAR )
+		if( ( (char*)pxCurrentBuf->payload )[0] == ENDOFCOMMANDCHAR )
 		{
 			/* Write a response, no need to copy */
 			tcp_write( tpcb, pcResponseString, strlen( pcResponseString ), 0);
@@ -166,7 +176,7 @@ char *pcCurrentPayload = NULL;
 		while( pxCurrentBuf->len != pxCurrentBuf->tot_len )
 		{
 			/* Change the payload pointer */
-			pcCurrentPayload = pxCurrentBuf->payload;
+			pcCurrentPayload = (char*)pxCurrentBuf->payload;
 
 			/* Loop trough the pbuf, j is the index for the current pbuf, i for the commandbuffer */
 			for( uint16_t j = 0; ( ( j < pxCurrentBuf->len ) && ( i < BUFFERSIZE ) ); i++, j++ )
@@ -253,7 +263,7 @@ static void prvCloseConnection( struct tcp_pcb* pxPcbToClose)
 /*
  * This function sets the callback for when new data is received
  */
-void vSetNewCommandCallback(void(*callBackFunction)(char *pcData))
+void vComsSetNewCommandCallback(void(*callBackFunction)(char *pcData))
 {
 	newDataCallback = callBackFunction;
 }
