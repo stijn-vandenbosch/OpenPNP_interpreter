@@ -26,7 +26,6 @@
 #include "stm32746g_discovery.h"
 #include "stm32746g_discovery_lcd.h"
 #include "stm32746g_discovery_sdram.h"
-#include "stm32746g_discovery_ts.h"
 
 #include "coms.h"
 
@@ -60,7 +59,8 @@ SDRAM_HandleTypeDef hsdram1;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
+static const char *pcTitleMessage = "OpenPNP controller";
+static const char *pcHeading = "Current command:";
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -145,26 +145,33 @@ int main(void)
 
   /* LCD Initialization */
     BSP_LCD_Init();
-    BSP_LCD_LayerDefaultInit(1, LCD_FB_START_ADDRESS);
-    BSP_LCD_LayerDefaultInit(0, LCD_FB_START_ADDRESS+(480*272*4));
+    //TODO: find out what this does
+    BSP_LCD_LayerDefaultInit( 1, LCD_FB_START_ADDRESS );
+    BSP_LCD_LayerDefaultInit( 0, LCD_FB_START_ADDRESS+(480*272*4) );
+
     /* Enable the LCD */
     BSP_LCD_DisplayOn();
+
     /* Select the LCD Background Layer  */
-    BSP_LCD_SelectLayer(0);
+    BSP_LCD_SelectLayer( 0 );
     /* Clear the Background Layer */
-    BSP_LCD_Clear(LCD_COLOR_BLACK);
-    BSP_LCD_SelectLayer(1);
+    BSP_LCD_Clear( LCD_COLOR_WHITE );
+
+    /* Select the front layer */
+    BSP_LCD_SelectLayer( 1 );
     /* Clear the foreground Layer */
-    BSP_LCD_Clear(LCD_COLOR_BLACK);
-    /* Some sign */
-    BSP_LCD_SetTextColor(LCD_COLOR_RED);
-    BSP_LCD_SetFont(&Font12);
-    BSP_LCD_DisplayStringAt(0, 0, (uint8_t*) "Display is working", CENTER_MODE);
+    BSP_LCD_Clear( LCD_COLOR_WHITE);
 
-    BSP_TS_Init(480,272);
-    uint32_t ScreensaverStart = HAL_GetTick() + SCREENSAVER_DELAY;
+    /* Initialize the communication */
+    vComsInitListener();
 
-    vComsInitListener();	//init coms
+    /* print the title */
+    BSP_LCD_ClearStringLine( 0 );
+    BSP_LCD_SetFont( &Font24 );
+    BSP_LCD_DisplayStringAt( 0, 0, (uint8_t*)pcTitleMessage, CENTER_MODE );
+    BSP_LCD_SetTextColor( LCD_COLOR_BLUE );
+    BSP_LCD_DisplayStringAt( 20, 30, (uint8_t*)pcHeading, LEFT_MODE );
+    BSP_LCD_SetFont( &Font16 );
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -176,19 +183,6 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	  MX_LWIP_Process();
-	  if(ScreensaverStart < HAL_GetTick()){
-		  //Scherm afzetten
-		  HAL_GPIO_WritePin(LCD_DISP_GPIO_PORT, LCD_DISP_PIN, GPIO_PIN_RESET);
-		  HAL_GPIO_WritePin(LCD_BL_CTRL_GPIO_PORT, LCD_BL_CTRL_PIN, GPIO_PIN_RESET);
-	  }
-	  TS_StateTypeDef TS_State;
-	  BSP_TS_GetState(&TS_State);
-	  if(TS_State.touchDetected > 0){
-		  HAL_GPIO_WritePin(LCD_DISP_GPIO_PORT, LCD_DISP_PIN, GPIO_PIN_SET);
-		  HAL_Delay(100);
-		  HAL_GPIO_WritePin(LCD_BL_CTRL_GPIO_PORT, LCD_BL_CTRL_PIN, GPIO_PIN_SET);
-		  ScreensaverStart = HAL_GetTick() + SCREENSAVER_DELAY;
-	  }
   }
   /* USER CODE END 3 */
 }

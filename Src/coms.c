@@ -11,21 +11,22 @@
 
 #include "coms.h"
 
-#define DEBUG 		//Uncomment this line for debug information on the serial port
-#define PORT	23	//TCP port to listen on
+#define DEBUG 			//Uncomment this line for debug information on the serial port
+#define PORT	23		//TCP port to listen on (telnet 23)
 #define BUFFERSIZE 64	//size of commandBuffer
 
-
+/* static function prototypes */
 static void prvComsPrintMyIP(void);
 static err_t prvComsAcceptCallback (void *arg, struct tcp_pcb *newpcb, err_t err);
 static void prvComsErrorCallback(void *arg, err_t err);
 static err_t prvComsDataReceivedCallback(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err);
 static void prvCloseConnection( struct tcp_pcb* pxPcbToClose);
 
-extern uint8_t IP_ADDRESS[4];	//initialized in lwip.c
-extern ip4_addr_t ipaddr;
-char cCommandbuffer[BUFFERSIZE];		//bss
-//const char *pcResponseString = "ok.\r\n";
+/* static and external variables */
+extern uint8_t IP_ADDRESS[4];		//initialized in lwip.c
+extern ip4_addr_t ipaddr;			//initialized in lwip.c
+static char cCommandbuffer[BUFFERSIZE];	//global buffer to store the received command
+static const char *pcResponseString = "ok.\r\n";
 /*--------------------------------------------------------------------------*/
 
 /*
@@ -172,13 +173,19 @@ char *pcCurrentPayload = NULL;
 		pbuf_free( p );
 
 		//check for the end of command (newline)
-		if(cCommandbuffer[0] == '\n')
+		if( cCommandbuffer[0] == '\n' )
 		{
 			//write a response, no need to copy
-			tcp_write( tpcb, "ok.", 3, 0);
-
+			tcp_write( tpcb, pcResponseString, strlen( pcResponseString ), 0);
+		}
+		else if( cCommandbuffer[0] == 'X' )
+		{
 			//close the connection
 			prvCloseConnection( tpcb );
+		}
+		else
+		{
+			//normal command
 		}
 
 
@@ -210,6 +217,7 @@ char *pcCurrentPayload = NULL;
 		printf("!: error\r\n");
 	}
 #endif
+
 	return ERR_OK;
 }
 /*--------------------------------------------------------------------------*/
