@@ -4,29 +4,36 @@
  *  Created on: 2 dec. 2020
  *      Author: Stijn
  */
+/* Library includes */
 #include <stdio.h>
 #include <lwip/tcp.h>
 #include <lwip/ip4_addr.h>
 #include <string.h>
 
+/* my includes *
 #include "coms.h"
 
-#define DEBUG 			//Uncomment this line for debug information on the serial port
-#define PORT	23		//TCP port to listen on (telnet 23)
-#define BUFFERSIZE 64	//size of commandBuffer
+/* Defines */
+#define DEBUG 					//Uncomment this line for debug information on the serial port
+#define PORT				23	//TCP port to listen on (telnet 23)
+#define BUFFERSIZE 			64	//Size of commandBuffer
+#define ENDOFCOMMANDCHAR	'\n'//Command delimiter
+#define CLOSECONNECTIONCHAR 'X'	//close connection requested
 
-/* static function prototypes */
+/* Static function prototypes */
 static void prvComsPrintMyIP(void);
 static err_t prvComsAcceptCallback (void *arg, struct tcp_pcb *newpcb, err_t err);
 static void prvComsErrorCallback(void *arg, err_t err);
 static err_t prvComsDataReceivedCallback(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err);
 static void prvCloseConnection( struct tcp_pcb* pxPcbToClose);
 
-/* static and external variables */
+/* Static and external variables */
 extern uint8_t IP_ADDRESS[4];		//initialized in lwip.c
 extern ip4_addr_t ipaddr;			//initialized in lwip.c
 static char cCommandbuffer[BUFFERSIZE];	//global buffer to store the received command
 static const char *pcResponseString = "ok.\r\n";
+static void (*newDataCallback)(char *pcData) = NULL;
+
 /*--------------------------------------------------------------------------*/
 
 /*
@@ -130,72 +137,83 @@ char *pcCurrentPayload = NULL;
 
 	LWIP_UNUSED_ARG( arg );
 
-	if( ( err == ERR_OK ) && ( p != NULL ) )	//new data
+	/* New data */
+	if( ( err == ERR_OK ) && ( p != NULL ) )
 	{
 		tcp_recved( tpcb, p->tot_len ); //ack packet
 
-		/* payload handling */
-		pcCurrentPayload = (char*)p->payload;	//point to the 1st payload
-		usTotalLength = p->tot_len;
+		/* Payload handling starts here */
+		usTotalLength = p->tot_len;	//store the total length
 
-		pxCurrentBuf = p;	//start with first pbuf
-		i = 0;				//initialise the commandbuffer index with 0
+		pxCurrentBuf = p;			//start with first pbuf
+		i = 0;						//Initialize the commandbuffer index with 0
 
-		//loop trough all the pbuf
+		/*
+		 * Check if the first received character is the
+		 * 'end of command' character before overwriting
+		 * the command buffer
+		 */
+		if( ( (char*)pxCurrentBuf->payload[0] ) == ENDOFCOMMANDCHAR )
+		{
+			/* Write a response, no need to copy */
+			tcp_write( tpcb, pcResponseString, strlen( pcResponseString ), 0);
+
+			/* Callback function for main */
+			newDataCallback( cCommandbuffer );
+		}
+
+		/* Loop trough all the pbuf */
 		while( pxCurrentBuf->len != pxCurrentBuf->tot_len )
 		{
-			//change the payload pointer
+			/* Change the payload pointer */
 			pcCurrentPayload = pxCurrentBuf->payload;
 
-			//loop trough the pbuf, j is the index for the current pbuf, i for the commandbuffer
+			/* Loop trough the pbuf, j is the index for the current pbuf, i for the commandbuffer */
 			for( uint16_t j = 0; ( ( j < pxCurrentBuf->len ) && ( i < BUFFERSIZE ) ); i++, j++ )
 			{
 				cCommandbuffer[i] = pcCurrentPayload[j];
 			}
 
-			//change the pbuf pointer
+			/* change the pbuf pointer */
 			pxCurrentBuf = pxCurrentBuf->next;
 		}
 
-		//the last one or first one
+		/* The last one or first one */
 		for(  uint16_t j = 0; ( ( j < pxCurrentBuf->len ) && ( i < BUFFERSIZE ) ); i++, j++ )
 		{
 			cCommandbuffer[i] = pcCurrentPayload[j];
 		}
 
-		//limit i to prevent an invalid index
+		/* Limit i to prevent an invalid index */
 		i = ( i == BUFFERSIZE ) ? ( BUFFERSIZE - 1 ) : ( i );
 
-		//make sure we have a string
+		/* Make sure we have a string */
 		cCommandbuffer[i] = '\0';
 
-		//free the memory -> payload is copied to commandbuffer
+		/* free the memory -> payload is copied to commandbuffer */
 		pbuf_free( p );
 
-		//check for the end of command (newline)
-		if( cCommandbuffer[0] == '\n' )
+		/* Check for the 'close connection character' */
+		if( cCommandbuffer[0] == CLOSECONNECTIONCHAR )
 		{
-			//write a response, no need to copy
-			tcp_write( tpcb, pcResponseString, strlen( pcResponseString ), 0);
-		}
-		else if( cCommandbuffer[0] == 'X' )
-		{
-			//close the connection
+			/* close the connection */
 			prvCloseConnection( tpcb );
 		}
 		else
 		{
-			//normal command
+			/* normal command */
 		}
 
 
 	}
-	else if( ( err == ERR_OK ) && ( p == NULL ) )	//connection closed
+	/* Other side closed the connection */
+	else if( ( err == ERR_OK ) && ( p == NULL ) )
 	{
 		//close the connection
 		prvCloseConnection( tpcb );
 	}
-	else	//error
+	/* Error */
+	else
 	{
 		//free the memory
 		pbuf_free( p );
@@ -229,4 +247,13 @@ static void prvCloseConnection( struct tcp_pcb* pxPcbToClose)
 {
 	tcp_recv( pxPcbToClose, NULL );	//clear dataReceived callback
 	tcp_close( pxPcbToClose );		//close the connection
+}
+/*--------------------------------------------------------------------------*/
+
+/*
+ * This function sets the callback for when new data is received
+ */
+void vSetNewCommandCallback(void(*callBackFunction)(char *pcData))
+{
+	newDataCallback = callBackFunction;
 }

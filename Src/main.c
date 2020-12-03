@@ -23,14 +23,14 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
 #include "stm32746g_discovery.h"
 #include "stm32746g_discovery_lcd.h"
 #include "stm32746g_discovery_sdram.h"
 
 #include "coms.h"
+#include "logo_data.h"
 
-
-#define SCREENSAVER_DELAY 10000
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -165,13 +165,18 @@ int main(void)
     /* Initialize the communication */
     vComsInitListener();
 
-    /* print the title */
-    BSP_LCD_ClearStringLine( 0 );
-    BSP_LCD_SetFont( &Font24 );
-    BSP_LCD_DisplayStringAt( 0, 0, (uint8_t*)pcTitleMessage, CENTER_MODE );
+    /* Display the logo */
+    WDA_LCD_DrawBitmap( LOGO_DATA, 10, 5, LOGO_DATA_X_PIXEL, LOGO_DATA_Y_PIXEL, LOGO_DATA_FORMAT );
+
+    /* Display the header */
+    BSP_LCD_SetFont( &Font20 );
     BSP_LCD_SetTextColor( LCD_COLOR_BLUE );
-    BSP_LCD_DisplayStringAt( 20, 30, (uint8_t*)pcHeading, LEFT_MODE );
+    BSP_LCD_DisplayStringAt( 10, LOGO_DATA_Y_PIXEL + 10, (uint8_t*)pcHeading, LEFT_MODE );
+
+    /* Set the font and color for later */
     BSP_LCD_SetFont( &Font16 );
+    BSP_LCD_SetTextColor( LCD_COLOR_BLACK );
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
