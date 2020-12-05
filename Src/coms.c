@@ -6,6 +6,7 @@
  */
 /* Library includes */
 #include <stdio.h>
+#include <stdint.h>
 #include <lwip/tcp.h>
 #include <lwip/ip4_addr.h>
 #include <string.h>

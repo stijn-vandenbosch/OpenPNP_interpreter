@@ -24,12 +24,16 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include <stdbool.h>
+
 #include "stm32746g_discovery.h"
 #include "stm32746g_discovery_lcd.h"
 #include "stm32746g_discovery_sdram.h"
+#include "stm32746g_discovery_ts.h"
 
 #include "coms.h"
 #include "logo_data.h"
+#include "buttons.h"
 
 /* USER CODE END Includes */
 
@@ -53,6 +57,8 @@ DMA2D_HandleTypeDef hdma2d;
 
 LTDC_HandleTypeDef hltdc;
 
+TIM_HandleTypeDef htim2;
+
 UART_HandleTypeDef huart1;
 
 SDRAM_HandleTypeDef hsdram1;
@@ -60,6 +66,7 @@ SDRAM_HandleTypeDef hsdram1;
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 static const char *pcHeading = "Current command:";
+static const char *pcButton1Text = "Pump:";
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -69,6 +76,7 @@ static void MX_LTDC_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_DMA2D_Init(void);
 static void MX_FMC_Init(void);
+static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
 
@@ -116,6 +124,7 @@ int _write(int file, char *ptr, int len) {
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+ButnStateTypeDef *pxPumpButton = NULL;
 
   /* USER CODE END 1 */
 
@@ -142,6 +151,7 @@ int main(void)
   MX_DMA2D_Init();
   MX_FMC_Init();
   MX_LWIP_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
   /* LCD Initialization */
@@ -171,9 +181,18 @@ int main(void)
     BSP_LCD_SetTextColor( LCD_COLOR_BLUE );
     BSP_LCD_DisplayStringAt( 10, LOGO_DATA_Y_PIXEL + 10, (uint8_t*)pcHeading, LEFT_MODE );
 
+    /* Display buttons */
+    BSP_LCD_DisplayStringAt( 10, 215, (uint8_t*)pcButton1Text, LEFT_MODE );
+    pxPumpButton = pxButtonsnewButton();			//new button
+    vButtonsSetPosition( pxPumpButton, 75, 200 );	//position on screen
+    vButtonsDraw( pxPumpButton );					//draw
+
     /* Set the font and color for later */
     BSP_LCD_SetFont( &Font16 );
     BSP_LCD_SetTextColor( LCD_COLOR_BLACK );
+
+    /* Initialize touch */
+    BSP_TS_Init( BSP_LCD_GetXSize(), BSP_LCD_GetYSize());
 
     /* Set the callback function for new data */
     vComsSetNewCommandCallback( vMainNewDataCallback );
@@ -191,7 +210,14 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  /* Handle lwip */
 	  MX_LWIP_Process();
+
+	  /* Handle button presses */
+	  bButtonsCheckTouch( pxPumpButton );
+
+	  /* Redraw if state changed */
+	  vButtonsDraw( pxPumpButton );
   }
   /* USER CODE END 3 */
 }
@@ -381,6 +407,51 @@ static void MX_LTDC_Init(void)
 }
 
 /**
+  * @brief TIM2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM2_Init(void)
+{
+
+  /* USER CODE BEGIN TIM2_Init 0 */
+
+  /* USER CODE END TIM2_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM2_Init 1 */
+
+  /* USER CODE END TIM2_Init 1 */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 200;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 1000000-1;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM2_Init 2 */
+
+  /* USER CODE END TIM2_Init 2 */
+
+}
+
+/**
   * @brief USART1 Initialization Function
   * @param None
   * @retval None
@@ -515,9 +586,8 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void vMainNewDataCallback( char* pcNewCommand )
 {
-	//printf( "Got to main!\r\nCommand: %s\r\n", pcNewCommand );
 	BSP_LCD_ClearStringLine( 6 );
-	BSP_LCD_DisplayStringAtLine( 6, (uint8_t*)pcNewCommand );
+	BSP_LCD_DisplayStringAtLine( 4, (uint8_t*)pcNewCommand );
 }
 /* USER CODE END 4 */
 

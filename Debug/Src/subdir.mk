@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Src/buttons.c \
 ../Src/coms.c \
 ../Src/ethernetif.c \
 ../Src/lwip.c \
@@ -14,6 +15,7 @@ C_SRCS += \
 ../Src/system_stm32f7xx.c 
 
 OBJS += \
+./Src/buttons.o \
 ./Src/coms.o \
 ./Src/ethernetif.o \
 ./Src/lwip.o \
@@ -24,6 +26,7 @@ OBJS += \
 ./Src/system_stm32f7xx.o 
 
 C_DEPS += \
+./Src/buttons.d \
 ./Src/coms.d \
 ./Src/ethernetif.d \
 ./Src/lwip.d \
