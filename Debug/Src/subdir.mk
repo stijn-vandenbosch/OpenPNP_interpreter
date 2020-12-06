@@ -4,9 +4,11 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Src/actuators.c \
 ../Src/buttons.c \
 ../Src/coms.c \
 ../Src/ethernetif.c \
+../Src/gcode.c \
 ../Src/lwip.c \
 ../Src/main.c \
 ../Src/stm32f7xx_hal_msp.c \
@@ -15,9 +17,11 @@ C_SRCS += \
 ../Src/system_stm32f7xx.c 
 
 OBJS += \
+./Src/actuators.o \
 ./Src/buttons.o \
 ./Src/coms.o \
 ./Src/ethernetif.o \
+./Src/gcode.o \
 ./Src/lwip.o \
 ./Src/main.o \
 ./Src/stm32f7xx_hal_msp.o \
@@ -26,9 +30,11 @@ OBJS += \
 ./Src/system_stm32f7xx.o 
 
 C_DEPS += \
+./Src/actuators.d \
 ./Src/buttons.d \
 ./Src/coms.d \
 ./Src/ethernetif.d \
+./Src/gcode.d \
 ./Src/lwip.d \
 ./Src/main.d \
 ./Src/stm32f7xx_hal_msp.d \

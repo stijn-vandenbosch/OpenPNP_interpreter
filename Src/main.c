@@ -35,6 +35,8 @@
 #include "coms.h"
 #include "logo_data.h"
 #include "buttons.h"
+#include "gcode.h"
+#include "actuators.h"
 
 /* USER CODE END Includes */
 
@@ -75,6 +77,8 @@ static const char *pcVacuumText = "Vacuum:";
 ButnStateTypeDef *pxPumpButton = NULL;
 ButnStateTypeDef *pxLightButton = NULL;
 ButnStateTypeDef *pxVacuumButton = NULL;
+
+GcodeCommandTypedef *pxCurrentCommand = NULL;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -193,16 +197,19 @@ int main(void)
     pxPumpButton = pxButtonsnewButton();			//new button
     vButtonsSetPosition( pxPumpButton, 83, 210 );	//position on screen
     vButtonsDraw( pxPumpButton );					//draw
+    vActuatorsSetButtonHandler( pxPumpButton, ACTUATORS_PUMPEVENT );
 
     BSP_LCD_DisplayStringAt( 150, 215, (uint8_t*)pcLightText, LEFT_MODE );
     pxLightButton = pxButtonsnewButton();			//new button
     vButtonsSetPosition( pxLightButton, 233, 210 );	//position on screen
     vButtonsDraw( pxLightButton );					//draw
+    vActuatorsSetButtonHandler( pxPumpButton, ACTUATORS_LIGHTEVENT );
 
     BSP_LCD_DisplayStringAt( 305, 215, (uint8_t*)pcVacuumText, LEFT_MODE );
     pxVacuumButton = pxButtonsnewButton();			//new button
     vButtonsSetPosition( pxVacuumButton, 397, 210 );//position on screen
     vButtonsDraw( pxVacuumButton );					//draw
+    vActuatorsSetButtonHandler( pxPumpButton, ACTUATORS_VACUUMEVENT );
 
     /* Set the font and color for later */
     BSP_LCD_SetFont( &Font16 );
@@ -441,7 +448,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 200;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 50000-1;
+  htim2.Init.Period = 250000-1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -560,20 +567,56 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOJ_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOK_CLK_ENABLE();
-  __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOI_CLK_ENABLE();
+  __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
-  __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, LIGHT2_Pin|Z_DIR_Pin|Y_DIR_Pin|X_DIR_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, Y_STEP_Pin|PUMP_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOI, FAN_Pin|X_STEP_Pin|LED_Pin|LCD_DISP_Pin
+                          |Z_STEP_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LCD_BL_CTRL_GPIO_Port, LCD_BL_CTRL_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOI, LED_Pin|LCD_DISP_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOG, LIGHT3_Pin|LIGHT1_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(VACUUM_GPIO_Port, VACUUM_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : LIGHT2_Pin Z_DIR_Pin Y_DIR_Pin X_DIR_Pin */
+  GPIO_InitStruct.Pin = LIGHT2_Pin|Z_DIR_Pin|Y_DIR_Pin|X_DIR_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : Y_STEP_Pin PUMP_Pin */
+  GPIO_InitStruct.Pin = Y_STEP_Pin|PUMP_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : FAN_Pin X_STEP_Pin LED_Pin LCD_DISP_Pin
+                           Z_STEP_Pin */
+  GPIO_InitStruct.Pin = FAN_Pin|X_STEP_Pin|LED_Pin|LCD_DISP_Pin
+                          |Z_STEP_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LCD_BL_CTRL_Pin */
   GPIO_InitStruct.Pin = LCD_BL_CTRL_Pin;
@@ -582,18 +625,25 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LCD_BL_CTRL_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LED_Pin LCD_DISP_Pin */
-  GPIO_InitStruct.Pin = LED_Pin|LCD_DISP_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
-
   /*Configure GPIO pin : BUTTON_Pin */
   GPIO_InitStruct.Pin = BUTTON_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(BUTTON_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LIGHT3_Pin LIGHT1_Pin */
+  GPIO_InitStruct.Pin = LIGHT3_Pin|LIGHT1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : VACUUM_Pin */
+  GPIO_InitStruct.Pin = VACUUM_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(VACUUM_GPIO_Port, &GPIO_InitStruct);
 
 }
 
@@ -603,13 +653,18 @@ void vMainNewDataCallback( char* pcNewCommand )
 char cType = 'G';
 uint16_t usCode = 0;
 
-	sscanf( pcNewCommand, "%c%hd", &cType, &usCode );
-
+	/* Clear previous */
 	BSP_LCD_ClearStringLine( 4 );
 	BSP_LCD_ClearStringLine( 5 );
 
+	/* Display command and comment */
 	BSP_LCD_DisplayStringAtLine( 4, (uint8_t*)strtok( pcNewCommand, ";" ) );
 	BSP_LCD_DisplayStringAtLine( 5, (uint8_t*)strtok( NULL, ";" ) );
+
+	/* Extract G-Code */
+	pxCurrentCommand = pxGcodeExtractCommand( pcNewCommand );
+
+	vGcodeFree( pxCurrentCommand );
 
 	if( ( cType == 'M' ) && ( usCode == 803 ) )
 	{

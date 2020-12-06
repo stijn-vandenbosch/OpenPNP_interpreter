@@ -5,10 +5,10 @@
  *      Author: Stijn
  */
 /* library includes */
-#include <stdint.h>
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 /* my includes */
 #include "buttons.h"
@@ -20,6 +20,7 @@
 #include "switch_on_icon_data.h"
 
 /* defines and macro functions */
+#define DEBUG	//uncomment this line to enable debug
 #define buttonsINRANGE( xPoint, yPoint, xMin, yMin, xMax, yMax )	( ( ( xPoint ) >= ( xMin ) ) && ( ( xPoint ) <= ( xMax ) ) \
 	&& ( ( yPoint ) >= ( yMin ) ) && ( ( yPoint ) <= ( yMax ) ) )
 
@@ -68,6 +69,9 @@ ButnStateTypeDef * pxNewButton = NULL;
 
 	if( pxNewButton == NULL)
 	{
+#ifdef DEBUG
+		malloc_stats();
+#endif
 		/* Allocation failed */
 		return NULL;
 	}
@@ -108,10 +112,11 @@ TS_StateTypeDef *pxTouchState = NULL;
 
 	BSP_TS_GetState( pxTouchState );
 
-	/* check if a touch occured */
+	/* check if a touch occurred */
 	if( pxTouchState->touchDetected )
 	{
 		/* check if the touch was in the button range */
+		/* only 1 finger touch is supported */
 		if( buttonsINRANGE( pxTouchState->touchX[0], pxTouchState->touchY[0], pxButtonToCheck->startX, pxButtonToCheck->startY, pxButtonToCheck->endX, pxButtonToCheck->endY ) )
 		{
 			pxButtonToCheck->isOn = pxButtonToCheck->isOn ? false : true;	//flip state

@@ -166,11 +166,11 @@ char *pcCurrentPayload = NULL;
 		 */
 		if( ( (char*)pxCurrentBuf->payload )[0] == ENDOFCOMMANDCHAR )
 		{
-			/* Write a response, no need to copy */
-			tcp_write( tpcb, pcResponseString, strlen( pcResponseString ), 0);
-
 			/* Callback function for main */
 			newDataCallback( cCommandbuffer );
+
+			/* Write a response, no need to copy */
+			tcp_write( tpcb, pcResponseString, strlen( pcResponseString ), 0);
 		}
 
 		/* Loop trough all the pbuf */
@@ -210,11 +210,6 @@ char *pcCurrentPayload = NULL;
 			/* close the connection */
 			prvCloseConnection( tpcb );
 		}
-		else
-		{
-			/* normal command */
-		}
-
 
 	}
 	/* Other side closed the connection */
