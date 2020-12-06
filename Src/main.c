@@ -72,7 +72,8 @@ SDRAM_HandleTypeDef hsdram1;
 /* Private variables ---------------------------------------------------------*/
 
 /* Lcd text */
-static const char *pcHeading = "Current command:";
+static const char *pcHeading1 = "Current command:";
+static const char *pcHeading2 = "Current position:";
 static const char *pcButton1Text = "Pump:";
 static const char *pcLightText = "Light:";
 static const char *pcVacuumText = "Vacuum:";
@@ -198,10 +199,11 @@ int main(void)
     /* Display the logo */
     WDA_LCD_DrawBitmap( LOGO_DATA, 10, 5, LOGO_DATA_X_PIXEL, LOGO_DATA_Y_PIXEL, LOGO_DATA_FORMAT );
 
-    /* Display the header */
+    /* Display the headers */
     BSP_LCD_SetFont( &Font20 );
     BSP_LCD_SetTextColor( LCD_COLOR_BLUE );
-    BSP_LCD_DisplayStringAt( 10, LOGO_DATA_Y_PIXEL + 10, (uint8_t*)pcHeading, LEFT_MODE );
+    BSP_LCD_DisplayStringAt( 10, LOGO_DATA_Y_PIXEL + 10, (uint8_t*)pcHeading1, LEFT_MODE );
+    BSP_LCD_DisplayStringAtLine( 6, (uint8_t*)pcHeading2 );
 
     /* Display buttons */
     BSP_LCD_DisplayStringAt( 10, 215, (uint8_t*)pcButton1Text, LEFT_MODE );
@@ -505,7 +507,7 @@ static void MX_TIM4_Init(void)
   htim4.Instance = TIM4;
   htim4.Init.Prescaler = 200;
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim4.Init.Period = 1000;
+  htim4.Init.Period = 10-1;
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
@@ -758,6 +760,17 @@ void vMainNewDataCallback( char* pcNewCommand )
 			/* move to the requested coordinate */
 			vMotionCalculateSteps( xCurrentPosition, pxCurrentCommand->position );
 			vMotionStartMovement();
+
+			/* set new coordinate after completion */
+			vMotionCopyCo( &xCurrentPosition, pxCurrentCommand->position );
+		}
+		/* home command */
+		else if( pxCurrentCommand->code == 28 )
+		{
+			xCurrentPosition.x = 0.0;
+			xCurrentPosition.y = 0.0;
+			xCurrentPosition.z = 0.0;
+			xCurrentPosition.e = 0.0;
 		}
 	}
 	else
@@ -798,11 +811,12 @@ char pcTempCoString[128] = "";
 		/* Construct coordinate string
 		 * -u _printf_float must be added to linker flags
 		 */
-		sprintf( pcTempCoString, "X%.3f Y%.3f Z%.2f Z%.2f", xCurrentPosition->x, xCurrentPosition->y, xCurrentPosition->z, xCurrentPosition->e);
+		sprintf( pcTempCoString, "X%.3f Y%.3f Z%.2f Z%.2f", xCurrentPosition.x, xCurrentPosition.y, xCurrentPosition.z, xCurrentPosition.e );
 
 		/* redraw coordinates */
-		BSP_LCD_ClearStringLine( 6 );
-		BSP_LCD_DisplayStringAtLine( 6, (uint8_t*))
+		while( !( hltdc.Instance->CDSR & ( 1<<2 ) ) );	//wait for vsync
+		BSP_LCD_ClearStringLine( 9 );
+		BSP_LCD_DisplayStringAtLine( 9, (uint8_t*)pcTempCoString );
 	}
 }
 

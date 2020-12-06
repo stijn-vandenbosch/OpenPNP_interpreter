@@ -23,5 +23,6 @@ typedef struct{
 
 void vMotionCalculateSteps( GcodeCoordinateTypeDef xStartPosition, GcodeCoordinateTypeDef xMoveToCo );
 void vMotionStartMovement( void );
+void vMotionCopyCo( GcodeCoordinateTypeDef *pxDestination, GcodeCoordinateTypeDef xSource );
 
 #endif /* MOTION_H_ */
