@@ -65,8 +65,15 @@ SDRAM_HandleTypeDef hsdram1;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
+
 static const char *pcHeading = "Current command:";
 static const char *pcButton1Text = "Pump:";
+static const char *pcLightText = "Light:";
+static const char *pcVacuumText = "Vacuum:";
+
+ButnStateTypeDef *pxPumpButton = NULL;
+ButnStateTypeDef *pxLightButton = NULL;
+ButnStateTypeDef *pxVacuumButton = NULL;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -124,7 +131,6 @@ int _write(int file, char *ptr, int len) {
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-ButnStateTypeDef *pxPumpButton = NULL;
 
   /* USER CODE END 1 */
 
@@ -184,8 +190,18 @@ ButnStateTypeDef *pxPumpButton = NULL;
     /* Display buttons */
     BSP_LCD_DisplayStringAt( 10, 215, (uint8_t*)pcButton1Text, LEFT_MODE );
     pxPumpButton = pxButtonsnewButton();			//new button
-    vButtonsSetPosition( pxPumpButton, 75, 200 );	//position on screen
+    vButtonsSetPosition( pxPumpButton, 83, 210 );	//position on screen
     vButtonsDraw( pxPumpButton );					//draw
+
+    BSP_LCD_DisplayStringAt( 150, 215, (uint8_t*)pcLightText, LEFT_MODE );
+    pxLightButton = pxButtonsnewButton();			//new button
+    vButtonsSetPosition( pxLightButton, 233, 210 );	//position on screen
+    vButtonsDraw( pxLightButton );					//draw
+
+    BSP_LCD_DisplayStringAt( 305, 215, (uint8_t*)pcVacuumText, LEFT_MODE );
+    pxVacuumButton = pxButtonsnewButton();			//new button
+    vButtonsSetPosition( pxVacuumButton, 388, 210 );//position on screen
+    vButtonsDraw( pxVacuumButton );					//draw
 
     /* Set the font and color for later */
     BSP_LCD_SetFont( &Font16 );
@@ -193,6 +209,9 @@ ButnStateTypeDef *pxPumpButton = NULL;
 
     /* Initialize touch */
     BSP_TS_Init( BSP_LCD_GetXSize(), BSP_LCD_GetYSize());
+
+    /* Initialize periodic timer2 */
+    HAL_TIM_Base_Start_IT( &htim2 ),
 
     /* Set the callback function for new data */
     vComsSetNewCommandCallback( vMainNewDataCallback );
@@ -212,12 +231,6 @@ ButnStateTypeDef *pxPumpButton = NULL;
     /* USER CODE BEGIN 3 */
 	  /* Handle lwip */
 	  MX_LWIP_Process();
-
-	  /* Handle button presses */
-	  bButtonsCheckTouch( pxPumpButton );
-
-	  /* Redraw if state changed */
-	  vButtonsDraw( pxPumpButton );
   }
   /* USER CODE END 3 */
 }
@@ -427,7 +440,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 200;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 1000000-1;
+  htim2.Init.Period = 50000-1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -589,6 +602,26 @@ void vMainNewDataCallback( char* pcNewCommand )
 	BSP_LCD_ClearStringLine( 6 );
 	BSP_LCD_DisplayStringAtLine( 4, (uint8_t*)pcNewCommand );
 }
+
+/*
+ * timer 2 every second
+ */
+void HAL_TIM_PeriodElapsedCallback( TIM_HandleTypeDef *htim )
+{
+	if(htim == &htim2)
+	{
+		/* Handle button presses */
+		bButtonsCheckTouch( pxPumpButton );
+		bButtonsCheckTouch( pxLightButton );
+		bButtonsCheckTouch( pxVacuumButton );
+
+		/* Redraw if state changed */
+		vButtonsDraw( pxPumpButton );
+		vButtonsDraw( pxLightButton );
+		vButtonsDraw( pxVacuumButton );
+	}
+}
+
 /* USER CODE END 4 */
 
 /**

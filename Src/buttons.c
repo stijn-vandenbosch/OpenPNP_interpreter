@@ -64,7 +64,7 @@ ButnStateTypeDef * pxButtonsnewButton( void )
 ButnStateTypeDef * pxNewButton = NULL;
 
 	/* Allocate memory */
-	pxNewButton = (ButnStateTypeDef *)malloc( sizeof( ButnStateTypeDef ) );
+	pxNewButton = (ButnStateTypeDef *)calloc( 1, sizeof( ButnStateTypeDef ) );
 
 	if( pxNewButton == NULL)
 	{
