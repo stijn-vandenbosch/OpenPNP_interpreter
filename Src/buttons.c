@@ -121,6 +121,13 @@ TS_StateTypeDef *pxTouchState = NULL;
 		{
 			pxButtonToCheck->isOn = pxButtonToCheck->isOn ? false : true;	//flip state
 			pxButtonToCheck->stateChanged = true;
+
+			/* wait for user to let go */
+			do
+			{
+				BSP_TS_GetState( pxTouchState );
+			}while( pxTouchState->touchDetected );
+
 			return true;
 		}
 	}

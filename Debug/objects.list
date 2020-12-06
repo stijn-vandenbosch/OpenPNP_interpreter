@@ -120,6 +120,7 @@
 "Src/gcode.o"
 "Src/lwip.o"
 "Src/main.o"
+"Src/motion.o"
 "Src/stm32f7xx_hal_msp.o"
 "Src/stm32f7xx_it.o"
 "Src/syscalls.o"

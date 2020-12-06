@@ -11,6 +11,7 @@ C_SRCS += \
 ../Src/gcode.c \
 ../Src/lwip.c \
 ../Src/main.c \
+../Src/motion.c \
 ../Src/stm32f7xx_hal_msp.c \
 ../Src/stm32f7xx_it.c \
 ../Src/syscalls.c \
@@ -24,6 +25,7 @@ OBJS += \
 ./Src/gcode.o \
 ./Src/lwip.o \
 ./Src/main.o \
+./Src/motion.o \
 ./Src/stm32f7xx_hal_msp.o \
 ./Src/stm32f7xx_it.o \
 ./Src/syscalls.o \
@@ -37,6 +39,7 @@ C_DEPS += \
 ./Src/gcode.d \
 ./Src/lwip.d \
 ./Src/main.d \
+./Src/motion.d \
 ./Src/stm32f7xx_hal_msp.d \
 ./Src/stm32f7xx_it.d \
 ./Src/syscalls.d \

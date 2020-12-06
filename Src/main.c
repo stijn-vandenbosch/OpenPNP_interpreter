@@ -37,6 +37,7 @@
 #include "buttons.h"
 #include "gcode.h"
 #include "actuators.h"
+#include "motion.h"
 
 /* USER CODE END Includes */
 
@@ -61,6 +62,7 @@ DMA2D_HandleTypeDef hdma2d;
 LTDC_HandleTypeDef hltdc;
 
 TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim4;
 
 UART_HandleTypeDef huart1;
 
@@ -69,16 +71,23 @@ SDRAM_HandleTypeDef hsdram1;
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 
+/* Lcd text */
 static const char *pcHeading = "Current command:";
 static const char *pcButton1Text = "Pump:";
 static const char *pcLightText = "Light:";
 static const char *pcVacuumText = "Vacuum:";
 
-ButnStateTypeDef *pxPumpButton = NULL;
-ButnStateTypeDef *pxLightButton = NULL;
-ButnStateTypeDef *pxVacuumButton = NULL;
+/* button handles */
+static ButnStateTypeDef *pxPumpButton = NULL;
+static ButnStateTypeDef *pxLightButton = NULL;
+static ButnStateTypeDef *pxVacuumButton = NULL;
 
+/* coordinates */
+static GcodeCoordinateTypeDef xCurrentPosition = {0.0,0.0,0.0,0.0};
+
+/* gcode command */
 GcodeCommandTypedef *pxCurrentCommand = NULL;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -89,6 +98,7 @@ static void MX_USART1_UART_Init(void);
 static void MX_DMA2D_Init(void);
 static void MX_FMC_Init(void);
 static void MX_TIM2_Init(void);
+static void MX_TIM4_Init(void);
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
 
@@ -163,6 +173,7 @@ int main(void)
   MX_FMC_Init();
   MX_LWIP_Init();
   MX_TIM2_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
 
   /* LCD Initialization */
@@ -203,13 +214,13 @@ int main(void)
     pxLightButton = pxButtonsnewButton();			//new button
     vButtonsSetPosition( pxLightButton, 233, 210 );	//position on screen
     vButtonsDraw( pxLightButton );					//draw
-    vActuatorsSetButtonHandler( pxPumpButton, ACTUATORS_LIGHTEVENT );
+    vActuatorsSetButtonHandler( pxLightButton, ACTUATORS_LIGHTEVENT );
 
     BSP_LCD_DisplayStringAt( 305, 215, (uint8_t*)pcVacuumText, LEFT_MODE );
     pxVacuumButton = pxButtonsnewButton();			//new button
     vButtonsSetPosition( pxVacuumButton, 397, 210 );//position on screen
     vButtonsDraw( pxVacuumButton );					//draw
-    vActuatorsSetButtonHandler( pxPumpButton, ACTUATORS_VACUUMEVENT );
+    vActuatorsSetButtonHandler( pxVacuumButton, ACTUATORS_VACUUMEVENT );
 
     /* Set the font and color for later */
     BSP_LCD_SetFont( &Font16 );
@@ -448,7 +459,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 200;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 250000-1;
+  htim2.Init.Period = 25000-1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -469,6 +480,76 @@ static void MX_TIM2_Init(void)
   /* USER CODE BEGIN TIM2_Init 2 */
 
   /* USER CODE END TIM2_Init 2 */
+
+}
+
+/**
+  * @brief TIM4 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM4_Init(void)
+{
+
+  /* USER CODE BEGIN TIM4_Init 0 */
+
+  /* USER CODE END TIM4_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM4_Init 1 */
+
+  /* USER CODE END TIM4_Init 1 */
+  htim4.Instance = TIM4;
+  htim4.Init.Prescaler = 200;
+  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim4.Init.Period = 1000;
+  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+  if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM4_Init 2 */
+
+  /* USER CODE END TIM4_Init 2 */
 
 }
 
@@ -577,10 +658,11 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOH_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, LIGHT2_Pin|Z_DIR_Pin|Y_DIR_Pin|X_DIR_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, E_STEP_Pin|LIGHT2_Pin|Z_DIR_Pin|Y_DIR_Pin
+                          |X_DIR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, Y_STEP_Pin|PUMP_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, Y_STEP_Pin|PUMP_Pin|E_DIR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOI, FAN_Pin|X_STEP_Pin|LED_Pin|LCD_DISP_Pin
@@ -595,15 +677,17 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(VACUUM_GPIO_Port, VACUUM_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : LIGHT2_Pin Z_DIR_Pin Y_DIR_Pin X_DIR_Pin */
-  GPIO_InitStruct.Pin = LIGHT2_Pin|Z_DIR_Pin|Y_DIR_Pin|X_DIR_Pin;
+  /*Configure GPIO pins : E_STEP_Pin LIGHT2_Pin Z_DIR_Pin Y_DIR_Pin
+                           X_DIR_Pin */
+  GPIO_InitStruct.Pin = E_STEP_Pin|LIGHT2_Pin|Z_DIR_Pin|Y_DIR_Pin
+                          |X_DIR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : Y_STEP_Pin PUMP_Pin */
-  GPIO_InitStruct.Pin = Y_STEP_Pin|PUMP_Pin;
+  /*Configure GPIO pins : Y_STEP_Pin PUMP_Pin E_DIR_Pin */
+  GPIO_InitStruct.Pin = Y_STEP_Pin|PUMP_Pin|E_DIR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -650,9 +734,6 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void vMainNewDataCallback( char* pcNewCommand )
 {
-char cType = 'G';
-uint16_t usCode = 0;
-
 	/* Clear previous */
 	BSP_LCD_ClearStringLine( 4 );
 	BSP_LCD_ClearStringLine( 5 );
@@ -664,52 +745,27 @@ uint16_t usCode = 0;
 	/* Extract G-Code */
 	pxCurrentCommand = pxGcodeExtractCommand( pcNewCommand );
 
+	/* Actuate or move */
+	if( pxCurrentCommand->type == GCODE_ACTUATE )
+	{
+		vActuatorsHandle( pxCurrentCommand->code );
+	}
+	else if( pxCurrentCommand->type == GCODE_POSITION)
+	{
+		/* linear move to command */
+		if( ( pxCurrentCommand->code == 0 ) || ( pxCurrentCommand->code == 1 ) )
+		{
+			/* move to the requested coordinate */
+			vMotionCalculateSteps( xCurrentPosition, pxCurrentCommand->position );
+			vMotionStartMovement();
+		}
+	}
+	else
+	{
+		printf( "****\r\nInvalid Command!\r\n****\r\n" );
+	}
+
 	vGcodeFree( pxCurrentCommand );
-
-	if( ( cType == 'M' ) && ( usCode == 803 ) )
-	{
-		pxLightButton->isOn = true;
-		pxLightButton->stateChanged = true;
-	}
-	else if( ( cType == 'M' ) && ( usCode == 804 ) )
-	{
-		pxLightButton->isOn = false;
-		pxLightButton->stateChanged = true;
-	}
-	else
-	{
-
-	}
-
-	if( ( cType == 'M' ) && ( usCode == 807 ) )
-	{
-		pxPumpButton->isOn = true;
-		pxPumpButton->stateChanged = true;
-	}
-	else if( ( cType == 'M' ) && ( usCode == 808 ) )
-	{
-		pxPumpButton->isOn = false;
-		pxPumpButton->stateChanged = true;
-	}
-	else
-	{
-
-	}
-
-	if( ( cType == 'M' ) && ( usCode == 809 ) )
-	{
-		pxVacuumButton->isOn = true;
-		pxVacuumButton->stateChanged = true;
-	}
-	else if( ( cType == 'M' ) && ( usCode == 810 ) )
-	{
-		pxVacuumButton->isOn = false;
-		pxVacuumButton->stateChanged = true;
-	}
-	else
-	{
-
-	}
 }
 
 /*
@@ -717,17 +773,36 @@ uint16_t usCode = 0;
  */
 void HAL_TIM_PeriodElapsedCallback( TIM_HandleTypeDef *htim )
 {
+char pcTempCoString[128] = "";
 	if(htim == &htim2)
 	{
 		/* Handle button presses */
-		bButtonsCheckTouch( pxPumpButton );
-		bButtonsCheckTouch( pxLightButton );
-		bButtonsCheckTouch( pxVacuumButton );
+		if( bButtonsCheckTouch( pxPumpButton ) )
+		{
+			HAL_GPIO_TogglePin( PUMP_GPIO_Port, PUMP_Pin );
+		}
+		if( bButtonsCheckTouch( pxLightButton ) )
+		{
+			HAL_GPIO_TogglePin( LIGHT1_GPIO_Port, LIGHT1_Pin );
+		}
+		if( bButtonsCheckTouch( pxVacuumButton ) )
+		{
+			HAL_GPIO_TogglePin( VACUUM_GPIO_Port, VACUUM_Pin );
+		}
 
 		/* Redraw if state changed */
 		vButtonsDraw( pxPumpButton );
 		vButtonsDraw( pxLightButton );
 		vButtonsDraw( pxVacuumButton );
+
+		/* Construct coordinate string
+		 * -u _printf_float must be added to linker flags
+		 */
+		sprintf( pcTempCoString, "X%.3f Y%.3f Z%.2f Z%.2f", xCurrentPosition->x, xCurrentPosition->y, xCurrentPosition->z, xCurrentPosition->e);
+
+		/* redraw coordinates */
+		BSP_LCD_ClearStringLine( 6 );
+		BSP_LCD_DisplayStringAtLine( 6, (uint8_t*))
 	}
 }
 

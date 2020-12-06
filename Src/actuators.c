@@ -41,7 +41,7 @@ static ButnStateTypeDef *pxVacuumButton = NULL;
 /*
  * This function handles the actuation
  */
-void vActuaotrsHandle( uint16_t code )
+void vActuatorsHandle( uint16_t code )
 {
 	switch(code)
 	{
