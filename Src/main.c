@@ -23,8 +23,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "stm32746g_discovery.h"
 #include "stm32746g_discovery_lcd.h"
@@ -200,7 +201,7 @@ int main(void)
 
     BSP_LCD_DisplayStringAt( 305, 215, (uint8_t*)pcVacuumText, LEFT_MODE );
     pxVacuumButton = pxButtonsnewButton();			//new button
-    vButtonsSetPosition( pxVacuumButton, 388, 210 );//position on screen
+    vButtonsSetPosition( pxVacuumButton, 397, 210 );//position on screen
     vButtonsDraw( pxVacuumButton );					//draw
 
     /* Set the font and color for later */
@@ -599,8 +600,61 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void vMainNewDataCallback( char* pcNewCommand )
 {
-	BSP_LCD_ClearStringLine( 6 );
-	BSP_LCD_DisplayStringAtLine( 4, (uint8_t*)pcNewCommand );
+char cType = 'G';
+uint16_t usCode = 0;
+
+	sscanf( pcNewCommand, "%c%hd", &cType, &usCode );
+
+	BSP_LCD_ClearStringLine( 4 );
+	BSP_LCD_ClearStringLine( 5 );
+
+	BSP_LCD_DisplayStringAtLine( 4, (uint8_t*)strtok( pcNewCommand, ";" ) );
+	BSP_LCD_DisplayStringAtLine( 5, (uint8_t*)strtok( NULL, ";" ) );
+
+	if( ( cType == 'M' ) && ( usCode == 803 ) )
+	{
+		pxLightButton->isOn = true;
+		pxLightButton->stateChanged = true;
+	}
+	else if( ( cType == 'M' ) && ( usCode == 804 ) )
+	{
+		pxLightButton->isOn = false;
+		pxLightButton->stateChanged = true;
+	}
+	else
+	{
+
+	}
+
+	if( ( cType == 'M' ) && ( usCode == 807 ) )
+	{
+		pxPumpButton->isOn = true;
+		pxPumpButton->stateChanged = true;
+	}
+	else if( ( cType == 'M' ) && ( usCode == 808 ) )
+	{
+		pxPumpButton->isOn = false;
+		pxPumpButton->stateChanged = true;
+	}
+	else
+	{
+
+	}
+
+	if( ( cType == 'M' ) && ( usCode == 809 ) )
+	{
+		pxVacuumButton->isOn = true;
+		pxVacuumButton->stateChanged = true;
+	}
+	else if( ( cType == 'M' ) && ( usCode == 810 ) )
+	{
+		pxVacuumButton->isOn = false;
+		pxVacuumButton->stateChanged = true;
+	}
+	else
+	{
+
+	}
 }
 
 /*
