@@ -104,6 +104,8 @@ static void MX_TIM4_Init(void);
 /* Private function prototypes -----------------------------------------------*/
 
 void vMainNewDataCallback( char* pcNewCommand );
+void vMainNewClientCallback( char *pcRemoteIP );
+void vMainConnectionCloseCallback( void );
 
 /* USER CODE END PFP */
 
@@ -234,8 +236,10 @@ int main(void)
     /* Initialize periodic timer2 */
     HAL_TIM_Base_Start_IT( &htim2 ),
 
-    /* Set the callback function for new data */
+    /* Set the callback functions */
     vComsSetNewCommandCallback( vMainNewDataCallback );
+    vComsSetNewClientCallback( vMainNewClientCallback );
+    vComsSetConnectionClosedCallback( vMainConnectionCloseCallback );
 
     /* Initialize the communication */
     vComsInitListener();
@@ -811,13 +815,31 @@ char pcTempCoString[128] = "";
 		/* Construct coordinate string
 		 * -u _printf_float must be added to linker flags
 		 */
-		sprintf( pcTempCoString, "X%.3f Y%.3f Z%.2f Z%.2f", xCurrentPosition.x, xCurrentPosition.y, xCurrentPosition.z, xCurrentPosition.e );
+		sprintf( pcTempCoString, "X%.3f Y%.3f Z%.2f E%.2f", xCurrentPosition.x, xCurrentPosition.y, xCurrentPosition.z, xCurrentPosition.e );
 
 		/* redraw coordinates */
 		while( !( hltdc.Instance->CDSR & ( 1<<2 ) ) );	//wait for vsync
 		BSP_LCD_ClearStringLine( 9 );
 		BSP_LCD_DisplayStringAtLine( 9, (uint8_t*)pcTempCoString );
 	}
+}
+
+void vMainNewClientCallback( char *pcRemoteIP )
+{
+	/* Print remote IP */
+	BSP_LCD_SetTextColor( LCD_COLOR_WHITE );
+	BSP_LCD_FillRect( 250, 10, BSP_LCD_GetXSize()-250, BSP_LCD_GetFont()->Height );
+	BSP_LCD_SetTextColor( LCD_COLOR_GREEN );
+	BSP_LCD_DisplayStringAt( 250, 10, (uint8_t*)pcRemoteIP, LEFT_MODE);
+	BSP_LCD_SetTextColor( LCD_COLOR_BLACK );
+}
+
+void vMainConnectionCloseCallback( void )
+{
+	/* clear string */
+	BSP_LCD_SetTextColor( LCD_COLOR_WHITE );
+	BSP_LCD_FillRect( 250, 10, BSP_LCD_GetXSize()-250, BSP_LCD_GetFont()->Height );
+	BSP_LCD_SetTextColor( LCD_COLOR_BLACK );
 }
 
 /* USER CODE END 4 */

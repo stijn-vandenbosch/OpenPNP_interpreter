@@ -8,7 +8,9 @@
 #ifndef COMS_H_
 #define COMS_H_
 
-void vComsInitListener(void);
-void vComsSetNewCommandCallback(void(*callBackFunction)(char *pcData));
+void vComsInitListener( void );
+void vComsSetNewCommandCallback( void(*callBackFunction)(char *pcData) );
+void vComsSetNewClientCallback( void(*callBackFunction)(char *pcIPData) );
+void vComsSetConnectionClosedCallback( void(*callBackFunction)(void) );
 
 #endif /* COMS_H_ */

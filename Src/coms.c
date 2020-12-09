@@ -25,10 +25,10 @@
 #ifdef DEBUG
 static void prvComsPrintMyIP(void);
 #endif
-static err_t prvComsAcceptCallback (void *arg, struct tcp_pcb *newpcb, err_t err);
-static void prvComsErrorCallback(void *arg, err_t err);
-static err_t prvComsDataReceivedCallback(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err);
-static void prvCloseConnection( struct tcp_pcb* pxPcbToClose);
+static err_t prvComsAcceptCallback ( void *arg, struct tcp_pcb *newpcb, err_t err );
+static void prvComsErrorCallback( void *arg, err_t err );
+static err_t prvComsDataReceivedCallback( void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err );
+static void prvCloseConnection( struct tcp_pcb* pxPcbToClose );
 
 /* Static and external variables */
 #ifdef DEBUG
@@ -38,6 +38,8 @@ extern ip4_addr_t ipaddr;			//initialized in lwip.c
 static char cCommandbuffer[BUFFERSIZE];	//global buffer to store the received command
 static const char *pcResponseString = "ok.\r\n";
 static void (*newDataCallback)(char *pcData) = NULL;
+static void (*newClientCallback)(char *pcIpString) = NULL;
+static void (*connectionClosedCallback)(void) = NULL;
 
 /*--------------------------------------------------------------------------*/
 
@@ -45,7 +47,7 @@ static void (*newDataCallback)(char *pcData) = NULL;
  * This function initializes the listener on the specified TCP port
  * The listening port has to be the same as configured in OpenPNP
  */
-void vComsInitListener(void)
+void vComsInitListener( void )
 {
 struct tcp_pcb *pxMyTcpPcb = NULL;	//new pointer to a protocol control block
 #ifdef DEBUG
@@ -89,7 +91,7 @@ err_t eBindStatus = ERR_VAL;
 /*
  * print the local IP address
  */
-static void prvComsPrintMyIP(void)
+static void prvComsPrintMyIP( void )
 {
 	printf("%hd.%hd.%hd.%hd",(uint16_t)IP_ADDRESS[0],(uint16_t)IP_ADDRESS[1],(uint16_t)IP_ADDRESS[2],(uint16_t)IP_ADDRESS[3]);
 }
@@ -99,8 +101,9 @@ static void prvComsPrintMyIP(void)
 /*
  * Called when a new connection can be accepted on a listening pcb.
  */
-static err_t prvComsAcceptCallback (void *arg, struct tcp_pcb *newpcb, err_t err)
+static err_t prvComsAcceptCallback ( void *arg, struct tcp_pcb *newpcb, err_t err )
 {
+char cIpString[64] = "";
 	LWIP_UNUSED_ARG( arg );
 	LWIP_UNUSED_ARG( err );
 
@@ -109,6 +112,9 @@ static err_t prvComsAcceptCallback (void *arg, struct tcp_pcb *newpcb, err_t err
 	tcp_poll( newpcb, NULL, 4 );	//TODO: add callback
 	tcp_recv( newpcb, prvComsDataReceivedCallback);
 
+	sprintf( cIpString, "%hd.%hd.%hd.%hd", ip4_addr1_16_val( newpcb->remote_ip ), ip4_addr2_16_val( newpcb->remote_ip ), ip4_addr3_16_val( newpcb->remote_ip ), ip4_addr4_16_val( newpcb->remote_ip ) );
+	newClientCallback( cIpString );
+
 	return ERR_OK;
 }
 /*--------------------------------------------------------------------------*/
@@ -116,7 +122,7 @@ static err_t prvComsAcceptCallback (void *arg, struct tcp_pcb *newpcb, err_t err
 /*
  * Called when the pcb receives a RST or is unexpectedly closed for any other reason.
  */
-static void prvComsErrorCallback(void *arg, err_t err)
+static void prvComsErrorCallback( void *arg, err_t err )
 {
 	LWIP_UNUSED_ARG( arg );
 	LWIP_UNUSED_ARG( err );
@@ -138,7 +144,7 @@ static void prvComsErrorCallback(void *arg, err_t err)
 /*
  * Called when data has been received.
  */
-static err_t prvComsDataReceivedCallback(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err)
+static err_t prvComsDataReceivedCallback( void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err )
 {
 uint16_t i = 0;
 struct pbuf* pxCurrentBuf = NULL;
@@ -209,6 +215,7 @@ char *pcCurrentPayload = NULL;
 		{
 			/* close the connection */
 			prvCloseConnection( tpcb );
+			connectionClosedCallback();
 		}
 
 	}
@@ -217,6 +224,7 @@ char *pcCurrentPayload = NULL;
 	{
 		//close the connection
 		prvCloseConnection( tpcb );
+		connectionClosedCallback();
 	}
 	/* Error */
 	else
@@ -249,7 +257,7 @@ char *pcCurrentPayload = NULL;
 /*
  * This function closes the connection
  */
-static void prvCloseConnection( struct tcp_pcb* pxPcbToClose)
+static void prvCloseConnection( struct tcp_pcb* pxPcbToClose )
 {
 	tcp_recv( pxPcbToClose, NULL );	//clear dataReceived callback
 	tcp_close( pxPcbToClose );		//close the connection
@@ -259,7 +267,25 @@ static void prvCloseConnection( struct tcp_pcb* pxPcbToClose)
 /*
  * This function sets the callback for when new data is received
  */
-void vComsSetNewCommandCallback(void(*callBackFunction)(char *pcData))
+void vComsSetNewCommandCallback( void(*callBackFunction)(char *pcData) )
 {
 	newDataCallback = callBackFunction;
+}
+/*--------------------------------------------------------------------------*/
+
+/*
+ * This function sets the callback for when a new client is connected
+ */
+void vComsSetNewClientCallback( void(*callBackFunction)(char *pcIPData) )
+{
+	newClientCallback = callBackFunction;
+}
+/*--------------------------------------------------------------------------*/
+
+/*
+ * This function sets the callback for when a client disconnects
+ */
+void vComsSetConnectionClosedCallback( void(*callBackFunction)(void) )
+{
+	connectionClosedCallback = callBackFunction;
 }
