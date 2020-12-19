@@ -20,7 +20,7 @@ typedef struct{
 
 /* public function prototypes */
 void vButtonsDraw( ButnStateTypeDef *pxButtonToDraw );
-ButnStateTypeDef * pxButtonsnewButton( void );
+ButnStateTypeDef * pxButtonsNewButton( void );
 void vButtonsSetPosition( ButnStateTypeDef *pxButtonToPosition, uint32_t ulXPos, uint32_t ulYPos );
 _Bool bButtonsCheckTouch( ButnStateTypeDef *pxButtonToCheck );
 

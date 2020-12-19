@@ -35,7 +35,7 @@ static void prvCloseConnection( struct tcp_pcb* pxPcbToClose );
 extern uint8_t IP_ADDRESS[4];		//initialized in lwip.c
 extern ip4_addr_t ipaddr;			//initialized in lwip.c
 #endif
-static char cCommandbuffer[BUFFERSIZE];	//global buffer to store the received command
+static char pcCommandBuffer[BUFFERSIZE];	//global buffer to store the received command
 static const char *pcResponseString = "ok.\r\n";
 static void (*newDataCallback)(char *pcData) = NULL;
 static void (*newClientCallback)(char *pcIpString) = NULL;
@@ -103,7 +103,7 @@ static void prvComsPrintMyIP( void )
  */
 static err_t prvComsAcceptCallback ( void *arg, struct tcp_pcb *newpcb, err_t err )
 {
-char cIpString[64] = "";
+char pcIpString[64] = "";
 	LWIP_UNUSED_ARG( arg );
 	LWIP_UNUSED_ARG( err );
 
@@ -112,8 +112,9 @@ char cIpString[64] = "";
 	tcp_poll( newpcb, NULL, 4 );	//TODO: add callback
 	tcp_recv( newpcb, prvComsDataReceivedCallback);
 
-	sprintf( cIpString, "%hd.%hd.%hd.%hd", ip4_addr1_16_val( newpcb->remote_ip ), ip4_addr2_16_val( newpcb->remote_ip ), ip4_addr3_16_val( newpcb->remote_ip ), ip4_addr4_16_val( newpcb->remote_ip ) );
-	newClientCallback( cIpString );
+	/* construct the 'ipstring' of the remote host and call the newClientCallback */
+	sprintf( pcIpString, "%hd.%hd.%hd.%hd", ip4_addr1_16_val( newpcb->remote_ip ), ip4_addr2_16_val( newpcb->remote_ip ), ip4_addr3_16_val( newpcb->remote_ip ), ip4_addr4_16_val( newpcb->remote_ip ) );
+	newClientCallback( pcIpString );
 
 	return ERR_OK;
 }
@@ -173,9 +174,9 @@ char *pcCurrentPayload = NULL;
 		if( ( (char*)pxCurrentBuf->payload )[0] == ENDOFCOMMANDCHAR )
 		{
 			/* Callback function for main */
-			newDataCallback( cCommandbuffer );
+			newDataCallback( pcCommandBuffer );
 
-			/* Write a response, no need to copy */
+			/* Write a response, no need to copy, responseString is a constant */
 			tcp_write( tpcb, pcResponseString, strlen( pcResponseString ), 0);
 		}
 
@@ -188,7 +189,7 @@ char *pcCurrentPayload = NULL;
 			/* Loop trough the pbuf, j is the index for the current pbuf, i for the commandbuffer */
 			for( uint16_t j = 0; ( ( j < pxCurrentBuf->len ) && ( i < BUFFERSIZE ) ); i++, j++ )
 			{
-				cCommandbuffer[i] = pcCurrentPayload[j];
+				pcCommandBuffer[i] = pcCurrentPayload[j];
 			}
 
 			/* change the pbuf pointer */
@@ -198,20 +199,22 @@ char *pcCurrentPayload = NULL;
 		/* The last one or first one */
 		for(  uint16_t j = 0; ( ( j < pxCurrentBuf->len ) && ( i < BUFFERSIZE ) ); i++, j++ )
 		{
-			cCommandbuffer[i] = pcCurrentPayload[j];
+			pcCommandBuffer[i] = pcCurrentPayload[j];
 		}
 
 		/* Limit i to prevent an invalid index */
 		i = ( i == BUFFERSIZE ) ? ( BUFFERSIZE - 1 ) : ( i );
 
 		/* Make sure we have a string */
-		cCommandbuffer[i] = '\0';
+		pcCommandBuffer[i] = '\0';
 
-		/* free the memory -> payload is copied to commandbuffer */
+		/* free the memory -> payload is copied to command buffer */
 		pbuf_free( p );
 
-		/* Check for the 'close connection character' */
-		if( cCommandbuffer[0] == CLOSECONNECTIONCHAR )
+		/* Check for the 'close connection character'
+		 * this is for testing purposes
+		 */
+		if( pcCommandBuffer[0] == CLOSECONNECTIONCHAR )
 		{
 			/* close the connection */
 			prvCloseConnection( tpcb );
@@ -238,7 +241,7 @@ char *pcCurrentPayload = NULL;
 	if( ( err == ERR_OK ) && ( p != NULL ) )
 	{
 		printf("*: received %hd bytes\r\n",usTotalLength);
-		printf("*: buf: %s\r\n",cCommandbuffer);
+		printf("*: buf: %s\r\n",pcCommandBuffer);
 	}
 	else if( ( err == ERR_OK ) && ( p == NULL ) )
 	{
@@ -275,6 +278,7 @@ void vComsSetNewCommandCallback( void(*callBackFunction)(char *pcData) )
 
 /*
  * This function sets the callback for when a new client is connected
+ * It can be used to display or print the remote IP address
  */
 void vComsSetNewClientCallback( void(*callBackFunction)(char *pcIPData) )
 {
@@ -284,6 +288,7 @@ void vComsSetNewClientCallback( void(*callBackFunction)(char *pcIPData) )
 
 /*
  * This function sets the callback for when a client disconnects
+ * It can be used to clear the remote IP address on the display
  */
 void vComsSetConnectionClosedCallback( void(*callBackFunction)(void) )
 {

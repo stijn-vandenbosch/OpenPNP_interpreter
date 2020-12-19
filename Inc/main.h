@@ -76,12 +76,12 @@ void Error_Handler(void);
 #define LED_GPIO_Port GPIOI
 #define LCD_DISP_Pin GPIO_PIN_12
 #define LCD_DISP_GPIO_Port GPIOI
-#define Z_STEP_Pin GPIO_PIN_0
-#define Z_STEP_GPIO_Port GPIOI
+#define PUMP_Pin GPIO_PIN_0
+#define PUMP_GPIO_Port GPIOI
 #define BUTTON_Pin GPIO_PIN_11
 #define BUTTON_GPIO_Port GPIOI
-#define PUMP_Pin GPIO_PIN_8
-#define PUMP_GPIO_Port GPIOA
+#define Z_STEP_Pin GPIO_PIN_8
+#define Z_STEP_GPIO_Port GPIOA
 #define LIGHT3_Pin GPIO_PIN_7
 #define LIGHT3_GPIO_Port GPIOG
 #define LIGHT1_Pin GPIO_PIN_6

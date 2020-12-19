@@ -60,17 +60,17 @@ void vButtonsDraw( ButnStateTypeDef *pxButtonToDraw )
 /*
  * This function creates a button
  */
-ButnStateTypeDef * pxButtonsnewButton( void )
+ButnStateTypeDef * pxButtonsNewButton( void )
 {
 ButnStateTypeDef * pxNewButton = NULL;
 
-	/* Allocate memory */
+	/* Allocate memory (and clear) */
 	pxNewButton = (ButnStateTypeDef *)calloc( 1, sizeof( ButnStateTypeDef ) );
 
 	if( pxNewButton == NULL)
 	{
 #ifdef DEBUG
-		malloc_stats();
+		printf("pxButtonsNewButton\r\nCould not allocate memory!\r\n");
 #endif
 		/* Allocation failed */
 		return NULL;
@@ -122,7 +122,10 @@ TS_StateTypeDef *pxTouchState = NULL;
 			pxButtonToCheck->isOn = pxButtonToCheck->isOn ? false : true;	//flip state
 			pxButtonToCheck->stateChanged = true;
 
-			/* wait for user to let go */
+			/* wait for user to let go
+			 * this way the button will only be toggled once
+			 * but code outside interrupt routines will be halted
+			 */
 			do
 			{
 				BSP_TS_GetState( pxTouchState );

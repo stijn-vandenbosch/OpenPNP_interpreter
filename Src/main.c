@@ -86,9 +86,6 @@ static ButnStateTypeDef *pxVacuumButton = NULL;
 /* coordinates */
 static GcodeCoordinateTypeDef xCurrentPosition = {0.0,0.0,0.0,0.0};
 
-/* gcode command */
-GcodeCommandTypedef *pxCurrentCommand = NULL;
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -209,19 +206,19 @@ int main(void)
 
     /* Display buttons */
     BSP_LCD_DisplayStringAt( 10, 215, (uint8_t*)pcButton1Text, LEFT_MODE );
-    pxPumpButton = pxButtonsnewButton();			//new button
+    pxPumpButton = pxButtonsNewButton();			//new button
     vButtonsSetPosition( pxPumpButton, 83, 210 );	//position on screen
     vButtonsDraw( pxPumpButton );					//draw
     vActuatorsSetButtonHandler( pxPumpButton, ACTUATORS_PUMPEVENT );
 
     BSP_LCD_DisplayStringAt( 150, 215, (uint8_t*)pcLightText, LEFT_MODE );
-    pxLightButton = pxButtonsnewButton();			//new button
+    pxLightButton = pxButtonsNewButton();			//new button
     vButtonsSetPosition( pxLightButton, 233, 210 );	//position on screen
     vButtonsDraw( pxLightButton );					//draw
     vActuatorsSetButtonHandler( pxLightButton, ACTUATORS_LIGHTEVENT );
 
     BSP_LCD_DisplayStringAt( 305, 215, (uint8_t*)pcVacuumText, LEFT_MODE );
-    pxVacuumButton = pxButtonsnewButton();			//new button
+    pxVacuumButton = pxButtonsNewButton();			//new button
     vButtonsSetPosition( pxVacuumButton, 397, 210 );//position on screen
     vButtonsDraw( pxVacuumButton );					//draw
     vActuatorsSetButtonHandler( pxVacuumButton, ACTUATORS_VACUUMEVENT );
@@ -668,11 +665,11 @@ static void MX_GPIO_Init(void)
                           |X_DIR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, Y_STEP_Pin|PUMP_Pin|E_DIR_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, Y_STEP_Pin|Z_STEP_Pin|E_DIR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOI, FAN_Pin|X_STEP_Pin|LED_Pin|LCD_DISP_Pin
-                          |Z_STEP_Pin, GPIO_PIN_RESET);
+                          |PUMP_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LCD_BL_CTRL_GPIO_Port, LCD_BL_CTRL_Pin, GPIO_PIN_RESET);
@@ -692,17 +689,17 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : Y_STEP_Pin PUMP_Pin E_DIR_Pin */
-  GPIO_InitStruct.Pin = Y_STEP_Pin|PUMP_Pin|E_DIR_Pin;
+  /*Configure GPIO pins : Y_STEP_Pin Z_STEP_Pin E_DIR_Pin */
+  GPIO_InitStruct.Pin = Y_STEP_Pin|Z_STEP_Pin|E_DIR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : FAN_Pin X_STEP_Pin LED_Pin LCD_DISP_Pin
-                           Z_STEP_Pin */
+                           PUMP_Pin */
   GPIO_InitStruct.Pin = FAN_Pin|X_STEP_Pin|LED_Pin|LCD_DISP_Pin
-                          |Z_STEP_Pin;
+                          |PUMP_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -738,8 +735,14 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+/*
+ * called by coms when a new gcode command is received
+ */
 void vMainNewDataCallback( char* pcNewCommand )
 {
+/* gcode command */
+GcodeCommandTypedef *pxCurrentCommand = NULL;
+
 	/* Clear previous */
 	BSP_LCD_ClearStringLine( 4 );
 	BSP_LCD_ClearStringLine( 5 );
@@ -782,7 +785,6 @@ void vMainNewDataCallback( char* pcNewCommand )
 		printf( "****\r\nInvalid Command!\r\n****\r\n" );
 	}
 
-	vGcodeFree( pxCurrentCommand );
 }
 
 /*

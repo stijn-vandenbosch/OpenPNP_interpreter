@@ -46,52 +46,52 @@ void vActuatorsHandle( uint16_t code )
 	switch(code)
 	{
 	case LIGHT1_ON:
-		HAL_GPIO_WritePin(LIGHT1_GPIO_Port,LIGHT1_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin( LIGHT1_GPIO_Port, LIGHT1_Pin, GPIO_PIN_SET );
 		pxLightButton->isOn = true;
 		pxLightButton->stateChanged = true;
 		break;
 	case LIGHT1_OFF:
-		HAL_GPIO_WritePin(LIGHT1_GPIO_Port,LIGHT1_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin( LIGHT1_GPIO_Port, LIGHT1_Pin, GPIO_PIN_RESET );
 		pxLightButton->isOn = false;
 		pxLightButton->stateChanged = true;
 		break;
 	case LIGHT2_ON:
-		HAL_GPIO_WritePin(LIGHT2_GPIO_Port,LIGHT2_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin( LIGHT2_GPIO_Port, LIGHT2_Pin, GPIO_PIN_SET );
 		break;
 	case LIGHT2_OFF:
-		HAL_GPIO_WritePin(LIGHT2_GPIO_Port,LIGHT2_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin( LIGHT2_GPIO_Port, LIGHT2_Pin, GPIO_PIN_RESET );
 		break;
 	case LIGHT3_ON:
-		HAL_GPIO_WritePin(LIGHT3_GPIO_Port,LIGHT3_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin( LIGHT3_GPIO_Port, LIGHT3_Pin, GPIO_PIN_SET );
 		break;
 	case LIGHT3_OFF:
-		HAL_GPIO_WritePin(LIGHT3_GPIO_Port,LIGHT3_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin( LIGHT3_GPIO_Port, LIGHT3_Pin, GPIO_PIN_RESET );
 		break;
 	case PUMP_ON:
-		HAL_GPIO_WritePin(PUMP_GPIO_Port,PUMP_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin( PUMP_GPIO_Port, PUMP_Pin, GPIO_PIN_SET );
 		pxPumpButton->isOn = true;
 		pxPumpButton->stateChanged = true;
 		break;
 	case PUMP_OFF:
-		HAL_GPIO_WritePin(PUMP_GPIO_Port,PUMP_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin( PUMP_GPIO_Port, PUMP_Pin, GPIO_PIN_RESET );
 		pxPumpButton->isOn = false;
 		pxPumpButton->stateChanged = true;
 		break;
 	case VACUUM_ON:
-		HAL_GPIO_WritePin(VACUUM_GPIO_Port,VACUUM_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin( VACUUM_GPIO_Port, VACUUM_Pin, GPIO_PIN_SET );
 		pxVacuumButton->isOn = true;
 		pxVacuumButton->stateChanged = true;
 		break;
 	case VACUUM_OFF:
-		HAL_GPIO_WritePin(VACUUM_GPIO_Port,VACUUM_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin( VACUUM_GPIO_Port, VACUUM_Pin, GPIO_PIN_RESET );
 		pxVacuumButton->isOn = false;
 		pxVacuumButton->stateChanged = true;
 		break;
 	case FAN_ON:
-		HAL_GPIO_WritePin(FAN_GPIO_Port,FAN_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin( FAN_GPIO_Port, FAN_Pin, GPIO_PIN_SET );
 		break;
 	case FAN_OFF:
-		HAL_GPIO_WritePin(FAN_GPIO_Port,FAN_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin( FAN_GPIO_Port, FAN_Pin, GPIO_PIN_RESET );
 		break;
 	default:
 		break;
