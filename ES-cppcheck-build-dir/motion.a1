@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="1019738772">
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="Src/motion.c:107:6" my-argnr="1" my-argname="pxDestination" file="Src/motion.c" line="109" col="2" value="0"/>
+    <unsafe-usage my-id="Src/motion.c:121:6" my-argnr="1" my-argname="htim" file="Src/motion.c" line="123" col="10" value="0"/>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="Src/motion.c:107:6" my-argnr="1" my-argname="pxDestination" file="Src/motion.c" line="109" col="2" value="0"/>
+    <unsafe-usage my-id="Src/motion.c:121:6" my-argnr="1" my-argname="htim" file="Src/motion.c" line="123" col="10" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="vMotionCalculateSteps" lineNumber="33"/>
+    <functiondecl functionName="vMotionStartMovement" lineNumber="82"/>
+    <functiondecl functionName="vMotionCopyCo" lineNumber="107"/>
+    <functiondecl functionName="HAL_TIM_PWM_PulseFinishedCallback" lineNumber="121"/>
+    <functiondecl functionName="vMotionCalculateSteps" lineNumber="33"/>
+    <functiondecl functionName="vMotionStartMovement" lineNumber="82"/>
+    <functiondecl functionName="vMotionCopyCo" lineNumber="107"/>
+    <functiondecl functionName="HAL_TIM_PWM_PulseFinishedCallback" lineNumber="121"/>
+    <functioncall functionName="Channel"/>
+    <functioncall functionName="E_DIR_GPIO_Port"/>
+    <functioncall functionName="E_DIR_Pin"/>
+    <functioncall functionName="E_STEP_GPIO_Port"/>
+    <functioncall functionName="E_STEP_Pin"/>
+    <functioncall functionName="GPIO_PIN_RESET"/>
+    <functioncall functionName="GPIO_PIN_SET"/>
+    <functioncall functionName="GPIO_PinState"/>
+    <functioncall functionName="HAL_GPIO_WritePin"/>
+    <functioncall functionName="HAL_TIM_PWM_Start_IT"/>
+    <functioncall functionName="HAL_TIM_PWM_Stop_IT"/>
+    <functioncall functionName="TIM_CHANNEL_1"/>
+    <functioncall functionName="TIM_CHANNEL_2"/>
+    <functioncall functionName="TIM_CHANNEL_3"/>
+    <functioncall functionName="TIM_CHANNEL_4"/>
+    <functioncall functionName="X_DIR_GPIO_Port"/>
+    <functioncall functionName="X_DIR_Pin"/>
+    <functioncall functionName="X_STEP_GPIO_Port"/>
+    <functioncall functionName="X_STEP_Pin"/>
+    <functioncall functionName="Y_DIR_GPIO_Port"/>
+    <functioncall functionName="Y_DIR_Pin"/>
+    <functioncall functionName="Y_STEP_GPIO_Port"/>
+    <functioncall functionName="Y_STEP_Pin"/>
+    <functioncall functionName="Z_DIR_GPIO_Port"/>
+    <functioncall functionName="Z_DIR_Pin"/>
+    <functioncall functionName="Z_STEP_GPIO_Port"/>
+    <functioncall functionName="Z_STEP_Pin"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="default"/>
+    <functioncall functionName="e"/>
+    <functioncall functionName="eDir"/>
+    <functioncall functionName="eSteps"/>
+    <functioncall functionName="false"/>
+    <functioncall functionName="htim4"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="switch"/>
+    <functioncall functionName="ucAxisToComplete"/>
+    <functioncall functionName="while"/>
+    <functioncall functionName="x"/>
+    <functioncall functionName="xDir"/>
+    <functioncall functionName="xSteps"/>
+    <functioncall functionName="y"/>
+    <functioncall functionName="yDir"/>
+    <functioncall functionName="ySteps"/>
+    <functioncall functionName="z"/>
+    <functioncall functionName="zDir"/>
+    <functioncall functionName="zSteps"/>
+  </FileInfo>
+</analyzerinfo>

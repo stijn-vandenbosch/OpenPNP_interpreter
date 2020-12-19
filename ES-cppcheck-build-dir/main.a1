@@ -1,0 +1,271 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="2122915405">
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;pcTempCoString&apos; can be reduced." verbose="The scope of the variable &apos;pcTempCoString&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" hash="8716851139070313938">
+            <location file0="Src\main.c" file="Src\main.c" line="800" column="6"/>
+            <symbol>pcTempCoString</symbol>
+        </error>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="_write" lineNumber="117"/>
+    <functiondecl functionName="main" lineNumber="146"/>
+    <functiondecl functionName="SystemClock_Config" lineNumber="264"/>
+    <functiondecl functionName="MX_DMA2D_Init" lineNumber="330"/>
+    <functiondecl functionName="MX_LTDC_Init" lineNumber="367"/>
+    <functiondecl functionName="MX_TIM2_Init" lineNumber="449"/>
+    <functiondecl functionName="MX_TIM4_Init" lineNumber="494"/>
+    <functiondecl functionName="MX_USART1_UART_Init" lineNumber="564"/>
+    <functiondecl functionName="MX_FMC_Init" lineNumber="595"/>
+    <functiondecl functionName="MX_GPIO_Init" lineNumber="646"/>
+    <functiondecl functionName="vMainNewDataCallback" lineNumber="741"/>
+    <functiondecl functionName="HAL_TIM_PeriodElapsedCallback" lineNumber="798"/>
+    <functiondecl functionName="vMainNewClientCallback" lineNumber="834"/>
+    <functiondecl functionName="vMainConnectionCloseCallback" lineNumber="844"/>
+    <functiondecl functionName="Error_Handler" lineNumber="858"/>
+    <functiondecl functionName="_write" lineNumber="117"/>
+    <functiondecl functionName="main" lineNumber="146"/>
+    <functiondecl functionName="SystemClock_Config" lineNumber="264"/>
+    <functiondecl functionName="MX_DMA2D_Init" lineNumber="330"/>
+    <functiondecl functionName="MX_LTDC_Init" lineNumber="367"/>
+    <functiondecl functionName="MX_TIM2_Init" lineNumber="449"/>
+    <functiondecl functionName="MX_TIM4_Init" lineNumber="494"/>
+    <functiondecl functionName="MX_USART1_UART_Init" lineNumber="564"/>
+    <functiondecl functionName="MX_FMC_Init" lineNumber="595"/>
+    <functiondecl functionName="MX_GPIO_Init" lineNumber="646"/>
+    <functiondecl functionName="vMainNewDataCallback" lineNumber="741"/>
+    <functiondecl functionName="HAL_TIM_PeriodElapsedCallback" lineNumber="798"/>
+    <functiondecl functionName="vMainNewClientCallback" lineNumber="834"/>
+    <functiondecl functionName="vMainConnectionCloseCallback" lineNumber="844"/>
+    <functiondecl functionName="Error_Handler" lineNumber="858"/>
+    <functiondecl functionName="assert_failed" lineNumber="876"/>
+    <functioncall functionName="ACTUATORS_LIGHTEVENT"/>
+    <functioncall functionName="ACTUATORS_PUMPEVENT"/>
+    <functioncall functionName="ACTUATORS_VACUUMEVENT"/>
+    <functioncall functionName="BSP_LCD_Clear"/>
+    <functioncall functionName="BSP_LCD_ClearStringLine"/>
+    <functioncall functionName="BSP_LCD_DisplayOn"/>
+    <functioncall functionName="BSP_LCD_DisplayStringAt"/>
+    <functioncall functionName="BSP_LCD_DisplayStringAtLine"/>
+    <functioncall functionName="BSP_LCD_FillRect"/>
+    <functioncall functionName="BSP_LCD_GetFont"/>
+    <functioncall functionName="BSP_LCD_GetXSize"/>
+    <functioncall functionName="BSP_LCD_GetYSize"/>
+    <functioncall functionName="BSP_LCD_Init"/>
+    <functioncall functionName="BSP_LCD_LayerDefaultInit"/>
+    <functioncall functionName="BSP_LCD_SelectLayer"/>
+    <functioncall functionName="BSP_LCD_SetFont"/>
+    <functioncall functionName="BSP_LCD_SetTextColor"/>
+    <functioncall functionName="BSP_TS_Init"/>
+    <functioncall functionName="BUTTON_GPIO_Port"/>
+    <functioncall functionName="BUTTON_Pin"/>
+    <functioncall functionName="DMA2D"/>
+    <functioncall functionName="DMA2D_INPUT_ARGB8888"/>
+    <functioncall functionName="DMA2D_M2M"/>
+    <functioncall functionName="DMA2D_NO_MODIF_ALPHA"/>
+    <functioncall functionName="DMA2D_OUTPUT_ARGB8888"/>
+    <functioncall functionName="EBADF"/>
+    <functioncall functionName="EIO"/>
+    <functioncall functionName="E_DIR_Pin"/>
+    <functioncall functionName="Error_Handler"/>
+    <functioncall functionName="FLASH_LATENCY_6"/>
+    <functioncall functionName="FMC_SDRAM_BANK1"/>
+    <functioncall functionName="FMC_SDRAM_CAS_LATENCY_1"/>
+    <functioncall functionName="FMC_SDRAM_CLOCK_DISABLE"/>
+    <functioncall functionName="FMC_SDRAM_COLUMN_BITS_NUM_8"/>
+    <functioncall functionName="FMC_SDRAM_DEVICE"/>
+    <functioncall functionName="FMC_SDRAM_INTERN_BANKS_NUM_4"/>
+    <functioncall functionName="FMC_SDRAM_MEM_BUS_WIDTH_16"/>
+    <functioncall functionName="FMC_SDRAM_RBURST_DISABLE"/>
+    <functioncall functionName="FMC_SDRAM_ROW_BITS_NUM_12"/>
+    <functioncall functionName="FMC_SDRAM_RPIPE_DELAY_0"/>
+    <functioncall functionName="FMC_SDRAM_WRITE_PROTECTION_DISABLE"/>
+    <functioncall functionName="Font16"/>
+    <functioncall functionName="Font20"/>
+    <functioncall functionName="GPIOA"/>
+    <functioncall functionName="GPIOB"/>
+    <functioncall functionName="GPIOG"/>
+    <functioncall functionName="GPIOI"/>
+    <functioncall functionName="GPIO_InitStruct"/>
+    <functioncall functionName="GPIO_MODE_INPUT"/>
+    <functioncall functionName="GPIO_MODE_OUTPUT_PP"/>
+    <functioncall functionName="GPIO_NOPULL"/>
+    <functioncall functionName="GPIO_PIN_RESET"/>
+    <functioncall functionName="GPIO_SPEED_FREQ_LOW"/>
+    <functioncall functionName="HAL_DMA2D_ConfigLayer"/>
+    <functioncall functionName="HAL_DMA2D_Init"/>
+    <functioncall functionName="HAL_GPIO_Init"/>
+    <functioncall functionName="HAL_GPIO_TogglePin"/>
+    <functioncall functionName="HAL_GPIO_WritePin"/>
+    <functioncall functionName="HAL_Init"/>
+    <functioncall functionName="HAL_LTDC_ConfigLayer"/>
+    <functioncall functionName="HAL_LTDC_Init"/>
+    <functioncall functionName="HAL_MAX_DELAY"/>
+    <functioncall functionName="HAL_PWREx_EnableOverDrive"/>
+    <functioncall functionName="HAL_PWR_EnableBkUpAccess"/>
+    <functioncall functionName="HAL_RCCEx_PeriphCLKConfig"/>
+    <functioncall functionName="HAL_RCC_ClockConfig"/>
+    <functioncall functionName="HAL_RCC_OscConfig"/>
+    <functioncall functionName="HAL_SDRAM_Init"/>
+    <functioncall functionName="HAL_TIMEx_MasterConfigSynchronization"/>
+    <functioncall functionName="HAL_TIM_Base_Init"/>
+    <functioncall functionName="HAL_TIM_Base_Start_IT"/>
+    <functioncall functionName="HAL_TIM_ConfigClockSource"/>
+    <functioncall functionName="HAL_TIM_PWM_ConfigChannel"/>
+    <functioncall functionName="HAL_TIM_PWM_Init"/>
+    <functioncall functionName="HAL_UART_Init"/>
+    <functioncall functionName="HAL_UART_Transmit"/>
+    <functioncall functionName="Height"/>
+    <functioncall functionName="LCD_BL_CTRL_GPIO_Port"/>
+    <functioncall functionName="LCD_BL_CTRL_Pin"/>
+    <functioncall functionName="LCD_COLOR_BLACK"/>
+    <functioncall functionName="LCD_COLOR_BLUE"/>
+    <functioncall functionName="LCD_COLOR_GREEN"/>
+    <functioncall functionName="LCD_COLOR_WHITE"/>
+    <functioncall functionName="LCD_FB_START_ADDRESS"/>
+    <functioncall functionName="LEFT_MODE"/>
+    <functioncall functionName="LIGHT1_GPIO_Port"/>
+    <functioncall functionName="LIGHT1_Pin"/>
+    <functioncall functionName="LOGO_DATA"/>
+    <functioncall functionName="LOGO_DATA_FORMAT"/>
+    <functioncall functionName="LOGO_DATA_X_PIXEL"/>
+    <functioncall functionName="LOGO_DATA_Y_PIXEL"/>
+    <functioncall functionName="LTDC"/>
+    <functioncall functionName="LTDC_BLENDING_FACTOR1_PAxCA"/>
+    <functioncall functionName="LTDC_BLENDING_FACTOR2_PAxCA"/>
+    <functioncall functionName="LTDC_DEPOLARITY_AL"/>
+    <functioncall functionName="LTDC_HSPOLARITY_AL"/>
+    <functioncall functionName="LTDC_PCPOLARITY_IPC"/>
+    <functioncall functionName="LTDC_PIXEL_FORMAT_ARGB1555"/>
+    <functioncall functionName="LTDC_VSPOLARITY_AL"/>
+    <functioncall functionName="MX_DMA2D_Init"/>
+    <functioncall functionName="MX_FMC_Init"/>
+    <functioncall functionName="MX_GPIO_Init"/>
+    <functioncall functionName="MX_LTDC_Init"/>
+    <functioncall functionName="MX_LWIP_Init"/>
+    <functioncall functionName="MX_LWIP_Process"/>
+    <functioncall functionName="MX_TIM2_Init"/>
+    <functioncall functionName="MX_TIM4_Init"/>
+    <functioncall functionName="MX_USART1_UART_Init"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="PUMP_GPIO_Port"/>
+    <functioncall functionName="PUMP_Pin"/>
+    <functioncall functionName="PWR_REGULATOR_VOLTAGE_SCALE1"/>
+    <functioncall functionName="PeriphClkInitStruct"/>
+    <functioncall functionName="RCC_CLOCKTYPE_PCLK2"/>
+    <functioncall functionName="RCC_ClkInitStruct"/>
+    <functioncall functionName="RCC_HCLK_DIV2"/>
+    <functioncall functionName="RCC_HCLK_DIV4"/>
+    <functioncall functionName="RCC_HSE_ON"/>
+    <functioncall functionName="RCC_OSCILLATORTYPE_HSE"/>
+    <functioncall functionName="RCC_OscInitStruct"/>
+    <functioncall functionName="RCC_PERIPHCLK_USART1"/>
+    <functioncall functionName="RCC_PLLP_DIV2"/>
+    <functioncall functionName="RCC_PLLSAIDIVR_4"/>
+    <functioncall functionName="RCC_PLLSAIP_DIV2"/>
+    <functioncall functionName="RCC_PLLSOURCE_HSE"/>
+    <functioncall functionName="RCC_PLL_ON"/>
+    <functioncall functionName="RCC_SYSCLKSOURCE_PLLCLK"/>
+    <functioncall functionName="RCC_SYSCLK_DIV1"/>
+    <functioncall functionName="RCC_USART1CLKSOURCE_PCLK2"/>
+    <functioncall functionName="SdramTiming"/>
+    <functioncall functionName="SystemClock_Config"/>
+    <functioncall functionName="TIM2"/>
+    <functioncall functionName="TIM4"/>
+    <functioncall functionName="TIM_AUTORELOAD_PRELOAD_ENABLE"/>
+    <functioncall functionName="TIM_CHANNEL_1"/>
+    <functioncall functionName="TIM_CHANNEL_2"/>
+    <functioncall functionName="TIM_CHANNEL_3"/>
+    <functioncall functionName="TIM_CHANNEL_4"/>
+    <functioncall functionName="TIM_CLOCKDIVISION_DIV1"/>
+    <functioncall functionName="TIM_CLOCKSOURCE_INTERNAL"/>
+    <functioncall functionName="TIM_COUNTERMODE_UP"/>
+    <functioncall functionName="TIM_MASTERSLAVEMODE_DISABLE"/>
+    <functioncall functionName="TIM_OCFAST_DISABLE"/>
+    <functioncall functionName="TIM_OCMODE_PWM1"/>
+    <functioncall functionName="TIM_OCPOLARITY_HIGH"/>
+    <functioncall functionName="TIM_TRGO_RESET"/>
+    <functioncall functionName="UART_ADVFEATURE_NO_INIT"/>
+    <functioncall functionName="UART_HWCONTROL_NONE"/>
+    <functioncall functionName="UART_MODE_TX_RX"/>
+    <functioncall functionName="UART_ONE_BIT_SAMPLE_DISABLE"/>
+    <functioncall functionName="UART_OVERSAMPLING_16"/>
+    <functioncall functionName="UART_PARITY_NONE"/>
+    <functioncall functionName="UART_STOPBITS_1"/>
+    <functioncall functionName="UART_WORDLENGTH_8B"/>
+    <functioncall functionName="USART1"/>
+    <functioncall functionName="VACUUM_GPIO_Port"/>
+    <functioncall functionName="VACUUM_Pin"/>
+    <functioncall functionName="WDA_LCD_DrawBitmap"/>
+    <functioncall functionName="X_DIR_Pin"/>
+    <functioncall functionName="__HAL_PWR_VOLTAGESCALING_CONFIG"/>
+    <functioncall functionName="__HAL_RCC_GPIOA_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_GPIOB_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_GPIOC_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_GPIOD_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_GPIOE_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_GPIOF_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_GPIOG_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_GPIOH_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_GPIOI_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_GPIOJ_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_GPIOK_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_PWR_CLK_ENABLE"/>
+    <functioncall functionName="bButtonsCheckTouch"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="code"/>
+    <functioncall functionName="default"/>
+    <functioncall functionName="e"/>
+    <functioncall functionName="file"/>
+    <functioncall functionName="hdma2d"/>
+    <functioncall functionName="hltdc"/>
+    <functioncall functionName="hsdram1"/>
+    <functioncall functionName="htim2"/>
+    <functioncall functionName="htim4"/>
+    <functioncall functionName="huart1"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="len"/>
+    <functioncall functionName="pLayerCfg"/>
+    <functioncall functionName="pLayerCfg1"/>
+    <functioncall functionName="pcButton1Text"/>
+    <functioncall functionName="pcHeading1"/>
+    <functioncall functionName="pcHeading2"/>
+    <functioncall functionName="pcLightText"/>
+    <functioncall functionName="pcNewCommand"/>
+    <functioncall functionName="pcRemoteIP"/>
+    <functioncall functionName="pcTempCoString"/>
+    <functioncall functionName="pcVacuumText"/>
+    <functioncall functionName="position"/>
+    <functioncall functionName="printf"/>
+    <functioncall functionName="ptr"/>
+    <functioncall functionName="pxButtonsNewButton"/>
+    <functioncall functionName="pxCurrentCommand"/>
+    <functioncall functionName="pxGcodeExtractCommand"/>
+    <functioncall functionName="pxLightButton"/>
+    <functioncall functionName="pxPumpButton"/>
+    <functioncall functionName="pxVacuumButton"/>
+    <functioncall functionName="sClockSourceConfig"/>
+    <functioncall functionName="sConfigOC"/>
+    <functioncall functionName="sMasterConfig"/>
+    <functioncall functionName="sprintf"/>
+    <functioncall functionName="strtok"/>
+    <functioncall functionName="switch"/>
+    <functioncall functionName="vActuatorsHandle"/>
+    <functioncall functionName="vActuatorsSetButtonHandler"/>
+    <functioncall functionName="vButtonsDraw"/>
+    <functioncall functionName="vButtonsSetPosition"/>
+    <functioncall functionName="vComsInitListener"/>
+    <functioncall functionName="vComsSetConnectionClosedCallback"/>
+    <functioncall functionName="vComsSetNewClientCallback"/>
+    <functioncall functionName="vComsSetNewCommandCallback"/>
+    <functioncall functionName="vGcodeFree"/>
+    <functioncall functionName="vMainConnectionCloseCallback"/>
+    <functioncall functionName="vMainNewClientCallback"/>
+    <functioncall functionName="vMainNewDataCallback"/>
+    <functioncall functionName="vMotionCalculateSteps"/>
+    <functioncall functionName="vMotionCopyCo"/>
+    <functioncall functionName="vMotionStartMovement"/>
+    <functioncall functionName="while"/>
+    <functioncall functionName="x"/>
+    <functioncall functionName="xCurrentPosition"/>
+    <functioncall functionName="y"/>
+    <functioncall functionName="z"/>
+  </FileInfo>
+</analyzerinfo>

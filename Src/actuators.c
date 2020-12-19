@@ -31,9 +31,9 @@
 /* static function prototypes */
 
 /* static and external variables */
-static ButnStateTypeDef *pxPumpButton = NULL;
-static ButnStateTypeDef *pxLightButton = NULL;
-static ButnStateTypeDef *pxVacuumButton = NULL;
+static ButnStateTypeDef *pxActuatorPumpButton = NULL;
+static ButnStateTypeDef *pxActuatorLightButton = NULL;
+static ButnStateTypeDef *pxActuatorVacuumButton = NULL;
 
 
 /*--------------------------------------------------------------------------*/
@@ -47,13 +47,13 @@ void vActuatorsHandle( uint16_t code )
 	{
 	case LIGHT1_ON:
 		HAL_GPIO_WritePin( LIGHT1_GPIO_Port, LIGHT1_Pin, GPIO_PIN_SET );
-		pxLightButton->isOn = true;
-		pxLightButton->stateChanged = true;
+		pxActuatorLightButton->isOn = true;
+		pxActuatorLightButton->stateChanged = true;
 		break;
 	case LIGHT1_OFF:
 		HAL_GPIO_WritePin( LIGHT1_GPIO_Port, LIGHT1_Pin, GPIO_PIN_RESET );
-		pxLightButton->isOn = false;
-		pxLightButton->stateChanged = true;
+		pxActuatorLightButton->isOn = false;
+		pxActuatorLightButton->stateChanged = true;
 		break;
 	case LIGHT2_ON:
 		HAL_GPIO_WritePin( LIGHT2_GPIO_Port, LIGHT2_Pin, GPIO_PIN_SET );
@@ -69,23 +69,23 @@ void vActuatorsHandle( uint16_t code )
 		break;
 	case PUMP_ON:
 		HAL_GPIO_WritePin( PUMP_GPIO_Port, PUMP_Pin, GPIO_PIN_SET );
-		pxPumpButton->isOn = true;
-		pxPumpButton->stateChanged = true;
+		pxActuatorPumpButton->isOn = true;
+		pxActuatorPumpButton->stateChanged = true;
 		break;
 	case PUMP_OFF:
 		HAL_GPIO_WritePin( PUMP_GPIO_Port, PUMP_Pin, GPIO_PIN_RESET );
-		pxPumpButton->isOn = false;
-		pxPumpButton->stateChanged = true;
+		pxActuatorPumpButton->isOn = false;
+		pxActuatorPumpButton->stateChanged = true;
 		break;
 	case VACUUM_ON:
 		HAL_GPIO_WritePin( VACUUM_GPIO_Port, VACUUM_Pin, GPIO_PIN_SET );
-		pxVacuumButton->isOn = true;
-		pxVacuumButton->stateChanged = true;
+		pxActuatorVacuumButton->isOn = true;
+		pxActuatorVacuumButton->stateChanged = true;
 		break;
 	case VACUUM_OFF:
 		HAL_GPIO_WritePin( VACUUM_GPIO_Port, VACUUM_Pin, GPIO_PIN_RESET );
-		pxVacuumButton->isOn = false;
-		pxVacuumButton->stateChanged = true;
+		pxActuatorVacuumButton->isOn = false;
+		pxActuatorVacuumButton->stateChanged = true;
 		break;
 	case FAN_ON:
 		HAL_GPIO_WritePin( FAN_GPIO_Port, FAN_Pin, GPIO_PIN_SET );
@@ -107,13 +107,13 @@ void vActuatorsSetButtonHandler( ButnStateTypeDef *pxButtonHandle, ActuatorsEven
 	switch( eEvent )
 	{
 	case ACTUATORS_LIGHTEVENT:
-		pxLightButton = pxButtonHandle;
+		pxActuatorLightButton = pxButtonHandle;
 		break;
 	case ACTUATORS_PUMPEVENT:
-		pxPumpButton = pxButtonHandle;
+		pxActuatorPumpButton = pxButtonHandle;
 		break;
 	case ACTUATORS_VACUUMEVENT:
-		pxVacuumButton = pxButtonHandle;
+		pxActuatorVacuumButton = pxButtonHandle;
 		break;
 	default:
 		//invalid event

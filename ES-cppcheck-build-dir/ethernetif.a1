@@ -1,0 +1,249 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="2467857771">
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;bufferoffset&apos; can be reduced." verbose="The scope of the variable &apos;bufferoffset&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" hash="9162185938115336840">
+            <location file0="Src\ethernetif.c" file="Src\ethernetif.c" line="378" column="12"/>
+            <symbol>bufferoffset</symbol>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;payloadoffset&apos; can be reduced." verbose="The scope of the variable &apos;payloadoffset&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" hash="16299493130604606903">
+            <location file0="Src\ethernetif.c" file="Src\ethernetif.c" line="379" column="12"/>
+            <symbol>payloadoffset</symbol>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &apos;byteslefttocopy&apos; can be reduced." verbose="The scope of the variable &apos;byteslefttocopy&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" hash="11172791620278888306">
+            <location file0="Src\ethernetif.c" file="Src\ethernetif.c" line="380" column="12"/>
+            <symbol>byteslefttocopy</symbol>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &apos;regvalue&apos; is assigned a value that is never used." verbose="Variable &apos;regvalue&apos; is assigned a value that is never used." cwe="563" hash="9697215347435814930">
+            <location file0="Src\ethernetif.c" file="Src\ethernetif.c" line="182" column="21"/>
+            <symbol>regvalue</symbol>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &apos;bufferoffset&apos; is assigned a value that is never used." verbose="Variable &apos;bufferoffset&apos; is assigned a value that is never used." cwe="563" hash="3622746979190146387">
+            <location file0="Src\ethernetif.c" file="Src\ethernetif.c" line="378" column="25"/>
+            <symbol>bufferoffset</symbol>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &apos;payloadoffset&apos; is assigned a value that is never used." verbose="Variable &apos;payloadoffset&apos; is assigned a value that is never used." cwe="563" hash="15337611017347184953">
+            <location file0="Src\ethernetif.c" file="Src\ethernetif.c" line="379" column="26"/>
+            <symbol>payloadoffset</symbol>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &apos;byteslefttocopy&apos; is assigned a value that is never used." verbose="Variable &apos;byteslefttocopy&apos; is assigned a value that is never used." cwe="563" hash="4927410096985617751">
+            <location file0="Src\ethernetif.c" file="Src\ethernetif.c" line="380" column="28"/>
+            <symbol>byteslefttocopy</symbol>
+        </error>
+  <FileInfo check="ctu">
+<function-call call-id="Src/ethernetif.c:371:22" call-funcname="low_level_input" call-argnr="1" file="Src/ethernetif.c" line="466" col="7" my-id="Src/ethernetif.c:460:6" my-argnr="1"/>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="Src/ethernetif.c:81:6" my-argnr="1" my-argname="ethHandle" file="Src/ethernetif.c" line="84" col="6" value="0"/>
+    <unsafe-usage my-id="Src/ethernetif.c:133:6" my-argnr="1" my-argname="ethHandle" file="Src/ethernetif.c" line="135" col="6" value="0"/>
+  </FileInfo>
+  <FileInfo check="ctu">
+<function-call call-id="Src/ethernetif.c:371:22" call-funcname="low_level_input" call-argnr="1" file="Src/ethernetif.c" line="466" col="7" my-id="Src/ethernetif.c:460:6" my-argnr="1"/>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="Src/ethernetif.c:81:6" my-argnr="1" my-argname="ethHandle" file="Src/ethernetif.c" line="84" col="6" value="0"/>
+    <unsafe-usage my-id="Src/ethernetif.c:133:6" my-argnr="1" my-argname="ethHandle" file="Src/ethernetif.c" line="135" col="6" value="0"/>
+  </FileInfo>
+  <FileInfo check="ctu">
+<function-call call-id="Src/ethernetif.c:371:22" call-funcname="low_level_input" call-argnr="1" file="Src/ethernetif.c" line="466" col="7" my-id="Src/ethernetif.c:460:6" my-argnr="1"/>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="Src/ethernetif.c:81:6" my-argnr="1" my-argname="ethHandle" file="Src/ethernetif.c" line="84" col="6" value="0"/>
+    <unsafe-usage my-id="Src/ethernetif.c:133:6" my-argnr="1" my-argname="ethHandle" file="Src/ethernetif.c" line="135" col="6" value="0"/>
+  </FileInfo>
+  <FileInfo check="ctu">
+<function-call call-id="Src/ethernetif.c:371:22" call-funcname="low_level_input" call-argnr="1" file="Src/ethernetif.c" line="466" col="7" my-id="Src/ethernetif.c:460:6" my-argnr="1"/>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="Src/ethernetif.c:81:6" my-argnr="1" my-argname="ethHandle" file="Src/ethernetif.c" line="84" col="6" value="0"/>
+    <unsafe-usage my-id="Src/ethernetif.c:133:6" my-argnr="1" my-argname="ethHandle" file="Src/ethernetif.c" line="135" col="6" value="0"/>
+  </FileInfo>
+  <FileInfo check="ctu">
+<function-call call-id="Src/ethernetif.c:371:22" call-funcname="low_level_input" call-argnr="1" file="Src/ethernetif.c" line="466" col="7" my-id="Src/ethernetif.c:460:6" my-argnr="1"/>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="Src/ethernetif.c:81:6" my-argnr="1" my-argname="ethHandle" file="Src/ethernetif.c" line="84" col="6" value="0"/>
+    <unsafe-usage my-id="Src/ethernetif.c:133:6" my-argnr="1" my-argname="ethHandle" file="Src/ethernetif.c" line="135" col="6" value="0"/>
+  </FileInfo>
+  <FileInfo check="ctu">
+<function-call call-id="Src/ethernetif.c:371:22" call-funcname="low_level_input" call-argnr="1" file="Src/ethernetif.c" line="466" col="7" my-id="Src/ethernetif.c:460:6" my-argnr="1"/>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="Src/ethernetif.c:81:6" my-argnr="1" my-argname="ethHandle" file="Src/ethernetif.c" line="84" col="6" value="0"/>
+    <unsafe-usage my-id="Src/ethernetif.c:133:6" my-argnr="1" my-argname="ethHandle" file="Src/ethernetif.c" line="135" col="6" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="HAL_ETH_MspInit" lineNumber="81"/>
+    <functiondecl functionName="HAL_ETH_MspDeInit" lineNumber="133"/>
+    <functiondecl functionName="low_level_init" lineNumber="180"/>
+    <functiondecl functionName="low_level_output" lineNumber="287"/>
+    <functiondecl functionName="low_level_input" lineNumber="371"/>
+    <functiondecl functionName="ethernetif_input" lineNumber="460"/>
+    <functiondecl functionName="low_level_output_arp_off" lineNumber="489"/>
+    <functiondecl functionName="ethernetif_init" lineNumber="515"/>
+    <functiondecl functionName="sys_jiffies" lineNumber="562"/>
+    <functiondecl functionName="sys_now" lineNumber="573"/>
+    <functiondecl functionName="ethernetif_set_link" lineNumber="589"/>
+    <functiondecl functionName="HAL_ETH_MspInit" lineNumber="81"/>
+    <functiondecl functionName="HAL_ETH_MspDeInit" lineNumber="133"/>
+    <functiondecl functionName="low_level_init" lineNumber="180"/>
+    <functiondecl functionName="low_level_output" lineNumber="287"/>
+    <functiondecl functionName="low_level_input" lineNumber="371"/>
+    <functiondecl functionName="ethernetif_input" lineNumber="460"/>
+    <functiondecl functionName="ethernetif_init" lineNumber="515"/>
+    <functiondecl functionName="sys_jiffies" lineNumber="562"/>
+    <functiondecl functionName="sys_now" lineNumber="573"/>
+    <functiondecl functionName="ethernetif_set_link" lineNumber="589"/>
+    <functiondecl functionName="HAL_ETH_MspInit" lineNumber="81"/>
+    <functiondecl functionName="HAL_ETH_MspDeInit" lineNumber="133"/>
+    <functiondecl functionName="low_level_init" lineNumber="180"/>
+    <functiondecl functionName="low_level_output" lineNumber="287"/>
+    <functiondecl functionName="low_level_input" lineNumber="371"/>
+    <functiondecl functionName="ethernetif_input" lineNumber="460"/>
+    <functiondecl functionName="ethernetif_init" lineNumber="515"/>
+    <functiondecl functionName="sys_jiffies" lineNumber="562"/>
+    <functiondecl functionName="sys_now" lineNumber="573"/>
+    <functiondecl functionName="ethernetif_set_link" lineNumber="589"/>
+    <functiondecl functionName="HAL_ETH_MspInit" lineNumber="81"/>
+    <functiondecl functionName="HAL_ETH_MspDeInit" lineNumber="133"/>
+    <functiondecl functionName="low_level_init" lineNumber="180"/>
+    <functiondecl functionName="low_level_output" lineNumber="287"/>
+    <functiondecl functionName="low_level_input" lineNumber="371"/>
+    <functiondecl functionName="ethernetif_input" lineNumber="460"/>
+    <functiondecl functionName="low_level_output_arp_off" lineNumber="489"/>
+    <functiondecl functionName="ethernetif_init" lineNumber="515"/>
+    <functiondecl functionName="sys_jiffies" lineNumber="562"/>
+    <functiondecl functionName="sys_now" lineNumber="573"/>
+    <functiondecl functionName="ethernetif_set_link" lineNumber="589"/>
+    <functiondecl functionName="HAL_ETH_MspInit" lineNumber="81"/>
+    <functiondecl functionName="HAL_ETH_MspDeInit" lineNumber="133"/>
+    <functiondecl functionName="low_level_init" lineNumber="180"/>
+    <functiondecl functionName="low_level_output" lineNumber="287"/>
+    <functiondecl functionName="low_level_input" lineNumber="371"/>
+    <functiondecl functionName="ethernetif_input" lineNumber="460"/>
+    <functiondecl functionName="low_level_output_arp_off" lineNumber="489"/>
+    <functiondecl functionName="ethernetif_init" lineNumber="515"/>
+    <functiondecl functionName="sys_jiffies" lineNumber="562"/>
+    <functiondecl functionName="sys_now" lineNumber="573"/>
+    <functiondecl functionName="ethernetif_set_link" lineNumber="589"/>
+    <functiondecl functionName="HAL_ETH_MspInit" lineNumber="81"/>
+    <functiondecl functionName="HAL_ETH_MspDeInit" lineNumber="133"/>
+    <functiondecl functionName="low_level_init" lineNumber="180"/>
+    <functiondecl functionName="low_level_output" lineNumber="287"/>
+    <functiondecl functionName="low_level_input" lineNumber="371"/>
+    <functiondecl functionName="ethernetif_input" lineNumber="460"/>
+    <functiondecl functionName="low_level_output_arp_off" lineNumber="489"/>
+    <functiondecl functionName="ethernetif_init" lineNumber="515"/>
+    <functiondecl functionName="sys_jiffies" lineNumber="562"/>
+    <functiondecl functionName="sys_now" lineNumber="573"/>
+    <functiondecl functionName="ethernetif_set_link" lineNumber="589"/>
+    <functiondecl functionName="ethernetif_update_config" lineNumber="627"/>
+    <functiondecl functionName="ethernetif_notify_conn_changed" lineNumber="715"/>
+    <functioncall functionName="Buffer1Addr"/>
+    <functioncall functionName="Buffer2NextDescAddr"/>
+    <functioncall functionName="DMARxDscrTab"/>
+    <functioncall functionName="DMATxDscrTab"/>
+    <functioncall functionName="DuplexMode"/>
+    <functioncall functionName="ERR_OK"/>
+    <functioncall functionName="ERR_USE"/>
+    <functioncall functionName="ETH"/>
+    <functioncall functionName="ETH_AUTONEGOTIATION_ENABLE"/>
+    <functioncall functionName="ETH_CHECKSUM_BY_HARDWARE"/>
+    <functioncall functionName="ETH_DMASR_RBUS"/>
+    <functioncall functionName="ETH_DMASR_TUS"/>
+    <functioncall functionName="ETH_HWADDR_LEN"/>
+    <functioncall functionName="ETH_MEDIA_INTERFACE_RMII"/>
+    <functioncall functionName="ETH_MODE_FULLDUPLEX"/>
+    <functioncall functionName="ETH_MODE_HALFDUPLEX"/>
+    <functioncall functionName="ETH_RXBUFNB"/>
+    <functioncall functionName="ETH_RXPOLLING_MODE"/>
+    <functioncall functionName="ETH_RX_BUF_SIZE"/>
+    <functioncall functionName="ETH_SPEED_100M"/>
+    <functioncall functionName="ETH_SPEED_10M"/>
+    <functioncall functionName="ETH_TXBUFNB"/>
+    <functioncall functionName="ETH_TX_BUF_SIZE"/>
+    <functioncall functionName="FSRxDesc"/>
+    <functioncall functionName="GPIOA"/>
+    <functioncall functionName="GPIOC"/>
+    <functioncall functionName="GPIOG"/>
+    <functioncall functionName="GPIO_AF11_ETH"/>
+    <functioncall functionName="GPIO_InitStruct"/>
+    <functioncall functionName="GPIO_MODE_AF_PP"/>
+    <functioncall functionName="GPIO_NOPULL"/>
+    <functioncall functionName="GPIO_PIN_11"/>
+    <functioncall functionName="GPIO_PIN_5"/>
+    <functioncall functionName="GPIO_PIN_7"/>
+    <functioncall functionName="GPIO_SPEED_FREQ_VERY_HIGH"/>
+    <functioncall functionName="HAL_ETH_ConfigMAC"/>
+    <functioncall functionName="HAL_ETH_DMARxDescListInit"/>
+    <functioncall functionName="HAL_ETH_DMATxDescListInit"/>
+    <functioncall functionName="HAL_ETH_GetReceivedFrame"/>
+    <functioncall functionName="HAL_ETH_Init"/>
+    <functioncall functionName="HAL_ETH_ReadPHYRegister"/>
+    <functioncall functionName="HAL_ETH_Start"/>
+    <functioncall functionName="HAL_ETH_Stop"/>
+    <functioncall functionName="HAL_ETH_TransmitFrame"/>
+    <functioncall functionName="HAL_ETH_WritePHYRegister"/>
+    <functioncall functionName="HAL_GPIO_DeInit"/>
+    <functioncall functionName="HAL_GPIO_Init"/>
+    <functioncall functionName="HAL_GetTick"/>
+    <functioncall functionName="IS_ETH_DUPLEX_MODE"/>
+    <functioncall functionName="IS_ETH_SPEED"/>
+    <functioncall functionName="LAN8742A_PHY_ADDRESS"/>
+    <functioncall functionName="LWIP_ASSERT"/>
+    <functioncall functionName="LWIP_DEBUGF"/>
+    <functioncall functionName="MACAddr"/>
+    <functioncall functionName="NETIF_DEBUG"/>
+    <functioncall functionName="NETIF_FLAG_ETHARP"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="PBUF_POOL"/>
+    <functioncall functionName="PBUF_RAW"/>
+    <functioncall functionName="PHY_AUTONEGOTIATION"/>
+    <functioncall functionName="PHY_BCR"/>
+    <functioncall functionName="PHY_BSR"/>
+    <functioncall functionName="PHY_ISFR"/>
+    <functioncall functionName="PHY_ISFR_INT4"/>
+    <functioncall functionName="PHY_SR"/>
+    <functioncall functionName="RESET"/>
+    <functioncall functionName="SegCount"/>
+    <functioncall functionName="Speed"/>
+    <functioncall functionName="TxDesc"/>
+    <functioncall functionName="__HAL_RCC_ETH_CLK_DISABLE"/>
+    <functioncall functionName="__HAL_RCC_ETH_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_GPIOA_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_GPIOC_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_GPIOG_CLK_ENABLE"/>
+    <functioncall functionName="assert_param"/>
+    <functioncall functionName="buffer"/>
+    <functioncall functionName="bufferoffset"/>
+    <functioncall functionName="byteslefttocopy"/>
+    <functioncall functionName="error"/>
+    <functioncall functionName="etharp_output"/>
+    <functioncall functionName="ethernetif_notify_conn_changed"/>
+    <functioncall functionName="ethip6_output"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="framelength"/>
+    <functioncall functionName="heth"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="input"/>
+    <functioncall functionName="len"/>
+    <functioncall functionName="length"/>
+    <functioncall functionName="low_level_init"/>
+    <functioncall functionName="low_level_input"/>
+    <functioncall functionName="low_level_output"/>
+    <functioncall functionName="memcpy"/>
+    <functioncall functionName="netif"/>
+    <functioncall functionName="netif_is_link_up"/>
+    <functioncall functionName="netif_set_link_down"/>
+    <functioncall functionName="netif_set_link_up"/>
+    <functioncall functionName="next"/>
+    <functioncall functionName="p"/>
+    <functioncall functionName="payloadoffset"/>
+    <functioncall functionName="pbuf_alloc"/>
+    <functioncall functionName="pbuf_free"/>
+    <functioncall functionName="regvalue"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="tickstart"/>
+    <functioncall functionName="uint16_t"/>
+    <functioncall functionName="uint32_t"/>
+    <functioncall functionName="while"/>
+  </FileInfo>
+</analyzerinfo>

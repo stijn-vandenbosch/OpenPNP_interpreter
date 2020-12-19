@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<results version="2">
+    <cppcheck version="2.3"/>
+    <errors>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;bufferoffset&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;bufferoffset&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" hash="9162185938115336840" sinceDate="19-12-2020">
+            <location file0="Src/ethernetif.c" file="Src\ethernetif.c" line="378"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;payloadoffset&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;payloadoffset&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" hash="16299493130604606903" sinceDate="19-12-2020">
+            <location file0="Src/ethernetif.c" file="Src\ethernetif.c" line="379"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;byteslefttocopy&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;byteslefttocopy&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" hash="11172791620278888306" sinceDate="19-12-2020">
+            <location file0="Src/ethernetif.c" file="Src\ethernetif.c" line="380"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &amp;#039;regvalue&amp;#039; is assigned a value that is never used." verbose="Variable &amp;#039;regvalue&amp;#039; is assigned a value that is never used." cwe="563" hash="9697215347435814930" sinceDate="19-12-2020">
+            <location file0="Src/ethernetif.c" file="Src\ethernetif.c" line="182"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &amp;#039;bufferoffset&amp;#039; is assigned a value that is never used." verbose="Variable &amp;#039;bufferoffset&amp;#039; is assigned a value that is never used." cwe="563" hash="3622746979190146387" sinceDate="19-12-2020">
+            <location file0="Src/ethernetif.c" file="Src\ethernetif.c" line="378"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &amp;#039;payloadoffset&amp;#039; is assigned a value that is never used." verbose="Variable &amp;#039;payloadoffset&amp;#039; is assigned a value that is never used." cwe="563" hash="15337611017347184953" sinceDate="19-12-2020">
+            <location file0="Src/ethernetif.c" file="Src\ethernetif.c" line="379"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &amp;#039;byteslefttocopy&amp;#039; is assigned a value that is never used." verbose="Variable &amp;#039;byteslefttocopy&amp;#039; is assigned a value that is never used." cwe="563" hash="4927410096985617751" sinceDate="19-12-2020">
+            <location file0="Src/ethernetif.c" file="Src\ethernetif.c" line="380"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_ETH_MspDeInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_ETH_MspDeInit&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\ethernetif.c" line="133"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_ETH_MspInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_ETH_MspInit&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\ethernetif.c" line="81"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;ethernetif_set_link&amp;#039; is never used." verbose="The function &amp;#039;ethernetif_set_link&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\ethernetif.c" line="589"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;low_level_output_arp_off&amp;#039; is never used." verbose="The function &amp;#039;low_level_output_arp_off&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\ethernetif.c" line="489"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;sys_jiffies&amp;#039; is never used." verbose="The function &amp;#039;sys_jiffies&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\ethernetif.c" line="562"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;sys_now&amp;#039; is never used." verbose="The function &amp;#039;sys_now&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\ethernetif.c" line="573"/>
+        </error>
+        <error id="redundantInitialization" severity="style" msg="Redundant initialization for &amp;#039;cFirstChar&amp;#039;. The initialized value is overwritten before it is read." verbose="Redundant initialization for &amp;#039;cFirstChar&amp;#039;. The initialized value is overwritten before it is read." cwe="563" hash="8883412658744105165" sinceDate="19-12-2020">
+            <location file0="Src/gcode.c" file="Src\gcode.c" line="51" info="cFirstChar is overwritten"/>
+            <location file0="Src/gcode.c" file="Src\gcode.c" line="37" info="cFirstChar is initialized"/>
+        </error>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;pcTempCoString&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;pcTempCoString&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" hash="8716851139070313938" sinceDate="19-12-2020">
+            <location file0="Src/main.c" file="Src\main.c" line="800"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_TIM_PeriodElapsedCallback&amp;#039; is never used." verbose="The function &amp;#039;HAL_TIM_PeriodElapsedCallback&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\main.c" line="798"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;assert_failed&amp;#039; is never used." verbose="The function &amp;#039;assert_failed&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\main.c" line="876"/>
+        </error>
+        <error id="ConfigurationNotChecked" severity="information" msg="Skipping configuration &amp;#039;HSE_VALUE&amp;#039; since the value of &amp;#039;HSE_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." verbose="Skipping configuration &amp;#039;HSE_VALUE&amp;#039; since the value of &amp;#039;HSE_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." sinceDate="19-12-2020">
+            <location file="Src\system_stm32f7xx.c" line="232"/>
+        </error>
+        <error id="ConfigurationNotChecked" severity="information" msg="Skipping configuration &amp;#039;HSE_VALUE&amp;#039; since the value of &amp;#039;HSE_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." verbose="Skipping configuration &amp;#039;HSE_VALUE&amp;#039; since the value of &amp;#039;HSE_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." sinceDate="19-12-2020">
+            <location file="Src\system_stm32f7xx.c" line="245"/>
+        </error>
+        <error id="ConfigurationNotChecked" severity="information" msg="Skipping configuration &amp;#039;HSI_VALUE&amp;#039; since the value of &amp;#039;HSI_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." verbose="Skipping configuration &amp;#039;HSI_VALUE&amp;#039; since the value of &amp;#039;HSI_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." sinceDate="19-12-2020">
+            <location file="Src\system_stm32f7xx.c" line="229"/>
+        </error>
+        <error id="ConfigurationNotChecked" severity="information" msg="Skipping configuration &amp;#039;HSI_VALUE&amp;#039; since the value of &amp;#039;HSI_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." verbose="Skipping configuration &amp;#039;HSI_VALUE&amp;#039; since the value of &amp;#039;HSI_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." sinceDate="19-12-2020">
+            <location file="Src\system_stm32f7xx.c" line="250"/>
+        </error>
+        <error id="ConfigurationNotChecked" severity="information" msg="Skipping configuration &amp;#039;HSI_VALUE&amp;#039; since the value of &amp;#039;HSI_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." verbose="Skipping configuration &amp;#039;HSI_VALUE&amp;#039; since the value of &amp;#039;HSI_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." sinceDate="19-12-2020">
+            <location file="Src\system_stm32f7xx.c" line="257"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;SystemCoreClockUpdate&amp;#039; is never used." verbose="The function &amp;#039;SystemCoreClockUpdate&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\system_stm32f7xx.c" line="219"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;SystemInit&amp;#039; is never used." verbose="The function &amp;#039;SystemInit&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\system_stm32f7xx.c" line="150"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_DMA2D_MspDeInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_DMA2D_MspDeInit&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\stm32f7xx_hal_msp.c" line="108"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_DMA2D_MspInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_DMA2D_MspInit&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\stm32f7xx_hal_msp.c" line="86"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_LTDC_MspDeInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_LTDC_MspDeInit&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\stm32f7xx_hal_msp.c" line="228"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_LTDC_MspInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_LTDC_MspInit&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\stm32f7xx_hal_msp.c" line="130"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_MspInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_MspInit&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\stm32f7xx_hal_msp.c" line="64"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_SDRAM_MspDeInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_SDRAM_MspDeInit&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\stm32f7xx_hal_msp.c" line="627"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_SDRAM_MspInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_SDRAM_MspInit&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\stm32f7xx_hal_msp.c" line="543"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_TIM_Base_MspDeInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_TIM_Base_MspDeInit&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\stm32f7xx_hal_msp.c" line="334"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_TIM_Base_MspInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_TIM_Base_MspInit&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\stm32f7xx_hal_msp.c" line="295"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_UART_MspDeInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_UART_MspDeInit&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\stm32f7xx_hal_msp.c" line="417"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_UART_MspInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_UART_MspInit&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\stm32f7xx_hal_msp.c" line="373"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_TIM_PWM_PulseFinishedCallback&amp;#039; is never used." verbose="The function &amp;#039;HAL_TIM_PWM_PulseFinishedCallback&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\motion.c" line="121"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;PendSV_Handler&amp;#039; is never used." verbose="The function &amp;#039;PendSV_Handler&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\stm32f7xx_it.c" line="84"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;SVC_Handler&amp;#039; is never used." verbose="The function &amp;#039;SVC_Handler&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\stm32f7xx_it.c" line="71"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;SysTick_Handler&amp;#039; is never used." verbose="The function &amp;#039;SysTick_Handler&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\stm32f7xx_it.c" line="97"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;TIM2_IRQHandler&amp;#039; is never used." verbose="The function &amp;#039;TIM2_IRQHandler&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\stm32f7xx_it.c" line="118"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;TIM4_IRQHandler&amp;#039; is never used." verbose="The function &amp;#039;TIM4_IRQHandler&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\stm32f7xx_it.c" line="132"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_close&amp;#039; is never used." verbose="The function &amp;#039;_close&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="140"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_execve&amp;#039; is never used." verbose="The function &amp;#039;_execve&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="203"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_exit&amp;#039; is never used." verbose="The function &amp;#039;_exit&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="88"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_fork&amp;#039; is never used." verbose="The function &amp;#039;_fork&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="197"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_fstat&amp;#039; is never used." verbose="The function &amp;#039;_fstat&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="146"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_getpid&amp;#039; is never used." verbose="The function &amp;#039;_getpid&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="77"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_isatty&amp;#039; is never used." verbose="The function &amp;#039;_isatty&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="152"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_link&amp;#039; is never used." verbose="The function &amp;#039;_link&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="191"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_lseek&amp;#039; is never used." verbose="The function &amp;#039;_lseek&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="157"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_open&amp;#039; is never used." verbose="The function &amp;#039;_open&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="162"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_read&amp;#039; is never used." verbose="The function &amp;#039;_read&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="94"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_sbrk&amp;#039; is never used." verbose="The function &amp;#039;_sbrk&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="117"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_stat&amp;#039; is never used." verbose="The function &amp;#039;_stat&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="185"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_times&amp;#039; is never used." verbose="The function &amp;#039;_times&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="180"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_unlink&amp;#039; is never used." verbose="The function &amp;#039;_unlink&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="174"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_wait&amp;#039; is never used." verbose="The function &amp;#039;_wait&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="168"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_write&amp;#039; is never used." verbose="The function &amp;#039;_write&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="106"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;initialise_monitor_handles&amp;#039; is never used." verbose="The function &amp;#039;initialise_monitor_handles&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\syscalls.c" line="73"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;sio_open&amp;#039; is never used." verbose="The function &amp;#039;sio_open&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\lwip.c" line="147"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;sio_read&amp;#039; is never used." verbose="The function &amp;#039;sio_read&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\lwip.c" line="183"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;sio_send&amp;#039; is never used." verbose="The function &amp;#039;sio_send&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\lwip.c" line="166"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;sio_tryread&amp;#039; is never used." verbose="The function &amp;#039;sio_tryread&amp;#039; is never used." cwe="561" sinceDate="19-12-2020">
+            <location file="Src\lwip.c" line="202"/>
+        </error>
+    </errors>
+</results>

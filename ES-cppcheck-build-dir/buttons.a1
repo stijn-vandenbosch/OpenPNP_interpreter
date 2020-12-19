@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="1384602307">
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="Src/buttons.c:37:6" my-argnr="1" my-argname="pxButtonToDraw" file="Src/buttons.c" line="40" col="7" value="0"/>
+    <unsafe-usage my-id="Src/buttons.c:96:6" my-argnr="1" my-argname="pxButtonToPosition" file="Src/buttons.c" line="98" col="2" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="vButtonsDraw" lineNumber="37"/>
+    <functiondecl functionName="pxButtonsNewButton" lineNumber="63"/>
+    <functiondecl functionName="vButtonsSetPosition" lineNumber="96"/>
+    <functiondecl functionName="bButtonsCheckTouch" lineNumber="109"/>
+    <functioncall functionName="BSP_TS_GetState"/>
+    <functioncall functionName="ButnStateTypeDef"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="SWITCH_OFF_ICON_DATA"/>
+    <functioncall functionName="SWITCH_OFF_ICON_DATA_FORMAT"/>
+    <functioncall functionName="SWITCH_OFF_ICON_DATA_X_PIXEL"/>
+    <functioncall functionName="SWITCH_OFF_ICON_DATA_Y_PIXEL"/>
+    <functioncall functionName="SWITCH_ON_ICON_DATA"/>
+    <functioncall functionName="SWITCH_ON_ICON_DATA_FORMAT"/>
+    <functioncall functionName="SWITCH_ON_ICON_DATA_X_PIXEL"/>
+    <functioncall functionName="SWITCH_ON_ICON_DATA_Y_PIXEL"/>
+    <functioncall functionName="WDA_LCD_DrawBitmap"/>
+    <functioncall functionName="calloc"/>
+    <functioncall functionName="endX"/>
+    <functioncall functionName="endY"/>
+    <functioncall functionName="false"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="isOn"/>
+    <functioncall functionName="printf"/>
+    <functioncall functionName="pxTouchState"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="startX"/>
+    <functioncall functionName="startY"/>
+    <functioncall functionName="stateChanged"/>
+    <functioncall functionName="touchDetected"/>
+    <functioncall functionName="true"/>
+    <functioncall functionName="ulXPos"/>
+    <functioncall functionName="ulYPos"/>
+    <functioncall functionName="while"/>
+  </FileInfo>
+</analyzerinfo>

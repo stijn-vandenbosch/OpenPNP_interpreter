@@ -779,12 +779,17 @@ GcodeCommandTypedef *pxCurrentCommand = NULL;
 			xCurrentPosition.z = 0.0;
 			xCurrentPosition.e = 0.0;
 		}
+		else
+		{
+			printf( "code G%hd not implemented\r\n", pxCurrentCommand->code );
+		}
 	}
 	else
 	{
 		printf( "****\r\nInvalid Command!\r\n****\r\n" );
 	}
 
+	vGcodeFree( pxCurrentCommand );	//free the allocated memory
 }
 
 /*

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="935901687">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="vComsInitListener" lineNumber="50"/>
+    <functiondecl functionName="prvComsPrintMyIP" lineNumber="90"/>
+    <functiondecl functionName="prvComsAcceptCallback" lineNumber="100"/>
+    <functiondecl functionName="prvComsErrorCallback" lineNumber="122"/>
+    <functiondecl functionName="prvComsDataReceivedCallback" lineNumber="144"/>
+    <functiondecl functionName="prvCloseConnection" lineNumber="258"/>
+    <functiondecl functionName="vComsSetNewCommandCallback" lineNumber="268"/>
+    <functiondecl functionName="vComsSetNewClientCallback" lineNumber="278"/>
+    <functiondecl functionName="vComsSetConnectionClosedCallback" lineNumber="288"/>
+    <functioncall functionName="ERR_VAL"/>
+    <functioncall functionName="LWIP_UNUSED_ARG"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="arg"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="callBackFunction"/>
+    <functioncall functionName="connectionClosedCallback"/>
+    <functioncall functionName="default"/>
+    <functioncall functionName="eBindStatus"/>
+    <functioncall functionName="err"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="ip4_addr1_16_val"/>
+    <functioncall functionName="ip4_addr2_16_val"/>
+    <functioncall functionName="ip4_addr3_16_val"/>
+    <functioncall functionName="ip4_addr4_16_val"/>
+    <functioncall functionName="ipaddr"/>
+    <functioncall functionName="j"/>
+    <functioncall functionName="len"/>
+    <functioncall functionName="newClientCallback"/>
+    <functioncall functionName="newDataCallback"/>
+    <functioncall functionName="newpcb"/>
+    <functioncall functionName="next"/>
+    <functioncall functionName="p"/>
+    <functioncall functionName="payload"/>
+    <functioncall functionName="pbuf_free"/>
+    <functioncall functionName="pcCommandBuffer"/>
+    <functioncall functionName="pcIpString"/>
+    <functioncall functionName="pcResponseString"/>
+    <functioncall functionName="printf"/>
+    <functioncall functionName="prvCloseConnection"/>
+    <functioncall functionName="prvComsAcceptCallback"/>
+    <functioncall functionName="prvComsDataReceivedCallback"/>
+    <functioncall functionName="prvComsErrorCallback"/>
+    <functioncall functionName="prvComsPrintMyIP"/>
+    <functioncall functionName="pxMyTcpPcb"/>
+    <functioncall functionName="pxPcbToClose"/>
+    <functioncall functionName="remote_ip"/>
+    <functioncall functionName="sprintf"/>
+    <functioncall functionName="strlen"/>
+    <functioncall functionName="switch"/>
+    <functioncall functionName="tcp_accept"/>
+    <functioncall functionName="tcp_bind"/>
+    <functioncall functionName="tcp_close"/>
+    <functioncall functionName="tcp_err"/>
+    <functioncall functionName="tcp_listen"/>
+    <functioncall functionName="tcp_new"/>
+    <functioncall functionName="tcp_poll"/>
+    <functioncall functionName="tcp_recv"/>
+    <functioncall functionName="tcp_recved"/>
+    <functioncall functionName="tcp_write"/>
+    <functioncall functionName="tot_len"/>
+    <functioncall functionName="tpcb"/>
+    <functioncall functionName="uint16_t"/>
+    <functioncall functionName="usTotalLength"/>
+    <functioncall functionName="void"/>
+    <functioncall functionName="while"/>
+  </FileInfo>
+</analyzerinfo>

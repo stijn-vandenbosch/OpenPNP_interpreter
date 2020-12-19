@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3639574572">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="SVC_Handler" lineNumber="71"/>
+    <functiondecl functionName="PendSV_Handler" lineNumber="84"/>
+    <functiondecl functionName="SysTick_Handler" lineNumber="97"/>
+    <functiondecl functionName="TIM2_IRQHandler" lineNumber="118"/>
+    <functiondecl functionName="TIM4_IRQHandler" lineNumber="132"/>
+    <functioncall functionName="HAL_IncTick"/>
+    <functioncall functionName="HAL_TIM_IRQHandler"/>
+    <functioncall functionName="htim2"/>
+    <functioncall functionName="htim4"/>
+  </FileInfo>
+</analyzerinfo>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="4196564194">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="MX_LWIP_Init" lineNumber="56"/>
+    <functiondecl functionName="MX_LWIP_Process" lineNumber="125"/>
+    <functiondecl functionName="MX_LWIP_Init" lineNumber="56"/>
+    <functiondecl functionName="MX_LWIP_Process" lineNumber="125"/>
+    <functiondecl functionName="sio_open" lineNumber="147"/>
+    <functiondecl functionName="sio_send" lineNumber="166"/>
+    <functiondecl functionName="sio_read" lineNumber="183"/>
+    <functiondecl functionName="sio_tryread" lineNumber="202"/>
+    <functioncall functionName="IP4_ADDR"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="ethernet_input"/>
+    <functioncall functionName="ethernetif_init"/>
+    <functioncall functionName="ethernetif_input"/>
+    <functioncall functionName="ethernetif_update_config"/>
+    <functioncall functionName="gnetif"/>
+    <functioncall functionName="gw"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="ipaddr"/>
+    <functioncall functionName="lwip_init"/>
+    <functioncall functionName="netif_add"/>
+    <functioncall functionName="netif_is_link_up"/>
+    <functioncall functionName="netif_set_default"/>
+    <functioncall functionName="netif_set_down"/>
+    <functioncall functionName="netif_set_link_callback"/>
+    <functioncall functionName="netif_set_up"/>
+    <functioncall functionName="netmask"/>
+    <functioncall functionName="sys_check_timeouts"/>
+  </FileInfo>
+</analyzerinfo>

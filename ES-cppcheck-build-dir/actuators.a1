@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="805955368">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="vActuatorsHandle" lineNumber="44"/>
+    <functiondecl functionName="vActuatorsSetButtonHandler" lineNumber="105"/>
+    <functioncall functionName="FAN_GPIO_Port"/>
+    <functioncall functionName="FAN_Pin"/>
+    <functioncall functionName="GPIO_PIN_RESET"/>
+    <functioncall functionName="GPIO_PIN_SET"/>
+    <functioncall functionName="HAL_GPIO_WritePin"/>
+    <functioncall functionName="LIGHT1_GPIO_Port"/>
+    <functioncall functionName="LIGHT1_Pin"/>
+    <functioncall functionName="LIGHT2_GPIO_Port"/>
+    <functioncall functionName="LIGHT2_Pin"/>
+    <functioncall functionName="LIGHT3_GPIO_Port"/>
+    <functioncall functionName="LIGHT3_Pin"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="PUMP_GPIO_Port"/>
+    <functioncall functionName="PUMP_Pin"/>
+    <functioncall functionName="VACUUM_GPIO_Port"/>
+    <functioncall functionName="VACUUM_Pin"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="code"/>
+    <functioncall functionName="default"/>
+    <functioncall functionName="eEvent"/>
+    <functioncall functionName="false"/>
+    <functioncall functionName="pxButtonHandle"/>
+    <functioncall functionName="switch"/>
+    <functioncall functionName="true"/>
+  </FileInfo>
+</analyzerinfo>

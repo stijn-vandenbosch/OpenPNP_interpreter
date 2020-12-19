@@ -50,38 +50,34 @@ static void (*connectionClosedCallback)(void) = NULL;
 void vComsInitListener( void )
 {
 struct tcp_pcb *pxMyTcpPcb = NULL;	//new pointer to a protocol control block
-#ifdef DEBUG
 err_t eBindStatus = ERR_VAL;
-#endif
 
 	/* create the new listener */
 	pxMyTcpPcb = tcp_new();
-#ifdef DEBUG
-	eBindStatus = tcp_bind( pxMyTcpPcb, &ipaddr, (uint16_t)PORT );
-#endif
+	eBindStatus = tcp_bind( pxMyTcpPcb, (ip_addr_t*)&ipaddr, (uint16_t)PORT );
 	pxMyTcpPcb = tcp_listen( pxMyTcpPcb );
 
-	/* specify callback */
+	/* specify callback for a new connection */
 	tcp_accept( pxMyTcpPcb, prvComsAcceptCallback );
 
 	/* debug information if desired */
 #ifdef DEBUG
-	printf("vComsInitListener Dubug:\r\n");
-	switch(eBindStatus)
+	printf( "vComsInitListener Dubug:\r\n" );
+	switch( eBindStatus )
 	{
 	case ERR_VAL:
-		printf("*: bind failed because the PCB is not in a valid state\r\n");
+		printf( "*: bind failed because the PCB is not in a valid state\r\n" );
 		break;
 	case ERR_USE:
-		printf("*: the port %hd is already in use\r\n",(uint16_t)PORT);
+		printf( "*: the port %hu is already in use\r\n", (uint16_t)PORT );
 		break;
 	case ERR_OK:
-		printf("*: bound to port %hd on ",(uint16_t)PORT);
+		printf( "*: bound to port %hu on ", (uint16_t)PORT );
 		prvComsPrintMyIP();
-		printf("\r\n");
+		printf( "\r\n" );
 		break;
 	default:
-		printf("!: Invalid return type\r\n");
+		printf( "!: Invalid return type\r\n" );
 		break;
 	}
 #endif
@@ -93,7 +89,7 @@ err_t eBindStatus = ERR_VAL;
  */
 static void prvComsPrintMyIP( void )
 {
-	printf("%hd.%hd.%hd.%hd",(uint16_t)IP_ADDRESS[0],(uint16_t)IP_ADDRESS[1],(uint16_t)IP_ADDRESS[2],(uint16_t)IP_ADDRESS[3]);
+	printf( "%hu.%hu.%hu.%hu", (uint16_t)IP_ADDRESS[0], (uint16_t)IP_ADDRESS[1], (uint16_t)IP_ADDRESS[2], (uint16_t)IP_ADDRESS[3] );
 }
 #endif
 /*--------------------------------------------------------------------------*/
@@ -129,14 +125,14 @@ static void prvComsErrorCallback( void *arg, err_t err )
 	LWIP_UNUSED_ARG( err );
 
 #ifdef DEBUG
-	printf("prvComsErrorCallback Debug:\r\n");
-	switch(err)
+	printf( "prvComsErrorCallback Debug:\r\n" );
+	switch( err )
 	{
 	case ERR_ABRT:
-		printf("*: aborted through tcp_abort or by a TCP timer\r\n");
+		printf( "*: aborted through tcp_abort or by a TCP timer\r\n" );
 		break;
 	case ERR_RST:
-		printf("*: the connection was reset by the remote host\r\n");
+		printf( "*: the connection was reset by the remote host\r\n" );
 	}
 #endif
 }
@@ -164,7 +160,6 @@ char *pcCurrentPayload = NULL;
 		usTotalLength = p->tot_len;	//store the total length
 
 		pxCurrentBuf = p;			//start with first pbuf
-		i = 0;						//Initialize the commandbuffer index with 0
 
 		/*
 		 * Check if the first received character is the
@@ -237,19 +232,19 @@ char *pcCurrentPayload = NULL;
 	}
 
 #ifdef DEBUG
-	printf("prvComsDataReceivedCallback Debug:\r\n");
+	printf( "prvComsDataReceivedCallback Debug:\r\n" );
 	if( ( err == ERR_OK ) && ( p != NULL ) )
 	{
-		printf("*: received %hd bytes\r\n",usTotalLength);
-		printf("*: buf: %s\r\n",pcCommandBuffer);
+		printf( "*: received %hu bytes\r\n", usTotalLength );
+		printf( "*: buf: %s\r\n",pcCommandBuffer );
 	}
 	else if( ( err == ERR_OK ) && ( p == NULL ) )
 	{
-		printf("*: connection closed\r\n");
+		printf( "*: connection closed\r\n" );
 	}
 	else
 	{
-		printf("!: error\r\n");
+		printf( "!: error\r\n" );
 	}
 #endif
 

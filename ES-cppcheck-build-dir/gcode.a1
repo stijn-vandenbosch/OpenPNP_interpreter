@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="933970092">
+        <error id="redundantInitialization" severity="style" msg="Redundant initialization for &apos;cFirstChar&apos;. The initialized value is overwritten before it is read." verbose="Redundant initialization for &apos;cFirstChar&apos;. The initialized value is overwritten before it is read." cwe="563" hash="8883412658744105165">
+            <location file0="Src\gcode.c" file="Src\gcode.c" line="51" column="13" info="cFirstChar is overwritten"/>
+            <location file0="Src\gcode.c" file="Src\gcode.c" line="37" column="17" info="cFirstChar is initialized"/>
+            <symbol>cFirstChar</symbol>
+        </error>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="Src/gcode.c:23:13" my-argnr="1" my-argname="pcStringToSearch" file="Src/gcode.c" line="91" col="26" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="Src/gcode.c:23:13" my-argnr="1" my-argname="pcStringToSearch" file="Src/gcode.c" line="91" col="26" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="pxGcodeExtractCommand" lineNumber="34"/>
+    <functiondecl functionName="prvGcodeGetXYZE" lineNumber="87"/>
+    <functiondecl functionName="vGcodeFree" lineNumber="124"/>
+    <functioncall functionName="GcodeCommandTypedef"/>
+    <functioncall functionName="GcodeTypeTypeDef"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="cFirstChar"/>
+    <functioncall functionName="calloc"/>
+    <functioncall functionName="code"/>
+    <functioncall functionName="e"/>
+    <functioncall functionName="free"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="malloc_stats"/>
+    <functioncall functionName="pcCommandString"/>
+    <functioncall functionName="pcIndexOfChar"/>
+    <functioncall functionName="pcStringToSearch"/>
+    <functioncall functionName="position"/>
+    <functioncall functionName="printf"/>
+    <functioncall functionName="prvGcodeGetXYZE"/>
+    <functioncall functionName="pxCommandToFree"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="sscanf"/>
+    <functioncall functionName="strchr"/>
+    <functioncall functionName="x"/>
+    <functioncall functionName="y"/>
+    <functioncall functionName="z"/>
+  </FileInfo>
+</analyzerinfo>
