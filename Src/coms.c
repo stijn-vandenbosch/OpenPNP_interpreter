@@ -105,7 +105,7 @@ char pcIpString[64] = "";
 
 	/* set callback functions */
 	tcp_err( newpcb, prvComsErrorCallback);
-	tcp_poll( newpcb, NULL, 4 );	//TODO: add callback
+	//tcp_poll( newpcb, NULL, 4 );	//long connection without data is normal, so no callback needed
 	tcp_recv( newpcb, prvComsDataReceivedCallback);
 
 	/* construct the 'ipstring' of the remote host and call the newClientCallback */

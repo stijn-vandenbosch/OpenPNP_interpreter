@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
 
@@ -112,7 +113,6 @@ void vMainConnectionCloseCallback( void );
 #include <sys/stat.h>
 #include <sys/times.h>
 #include <sys/unistd.h>
-#include <stdio.h>
 
 int _write(int file, char *ptr, int len) {
     HAL_StatusTypeDef xStatus;
@@ -781,7 +781,7 @@ GcodeCommandTypedef *pxCurrentCommand = NULL;
 		}
 		else
 		{
-			printf( "code G%hd not implemented\r\n", pxCurrentCommand->code );
+			printf( "code G%hu not implemented\r\n", pxCurrentCommand->code );
 		}
 	}
 	else

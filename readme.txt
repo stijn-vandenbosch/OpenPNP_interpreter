@@ -47,5 +47,6 @@ printje dat ik thuis geëtst heb. De uitgangen worden zichtbaar gemaakt op leds.
 	https://github.com/openpnp/openpnp/wiki
 
 == Optioneel: Extra's ==
-
-
+	-printje getekend en geëtst
+	-cppcheck uitgevoerd
+	-versie controle op github: https://github.com/stijn-vandenbosch/OpenPNP_interpreter
