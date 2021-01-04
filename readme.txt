@@ -31,8 +31,8 @@ printje dat ik thuis geëtst heb. De uitgangen worden zichtbaar gemaakt op leds.
 
 == Opmerkingen == 
    Aansluitingen
-	-volg het kiCAD schema
-	-sluit het bordje aan op het netwerk (static 192.168.1.69)
+	-volg het kiCAD schema voor de LED's
+	-sluit het bordje aan op het netwerk (static 192.168.1.69/24)
    Software
 	-open de map openpnp
 	-voer openPnP.exe uit

@@ -752,7 +752,7 @@ GcodeCommandTypedef *pxCurrentCommand = NULL;
 	BSP_LCD_DisplayStringAtLine( 5, (uint8_t*)strtok( NULL, ";" ) );
 
 	/* Extract G-Code */
-	pxCurrentCommand = pxGcodeExtractCommand( pcNewCommand );
+	pxCurrentCommand = pxGcodeExtractCommand( pcNewCommand, xCurrentPosition );
 
 	/* Actuate or move */
 	if( pxCurrentCommand->type == GCODE_ACTUATE )
@@ -769,7 +769,7 @@ GcodeCommandTypedef *pxCurrentCommand = NULL;
 			vMotionStartMovement();
 
 			/* set new coordinate after completion */
-			vMotionCopyCo( &xCurrentPosition, pxCurrentCommand->position );
+			vGcodeCopyCo( &xCurrentPosition, pxCurrentCommand->position );
 		}
 		/* home command */
 		else if( pxCurrentCommand->code == 28 )

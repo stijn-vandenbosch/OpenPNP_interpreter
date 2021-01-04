@@ -20,7 +20,7 @@
 	( ( type == GCODE_POSITION ) && ( ( code == 0 ) || ( code == 1 ) ) )
 
 /* static function prototypes */
-static void prvGcodeGetXYZE( char* pcStringToSearch, GcodeCoordinateTypeDef *pxCoordintate );
+static void prvGcodeGetXYZE( char* pcStringToSearch, GcodeCoordinateTypeDef *pxCurrentPos );
 
 /* static and external variables */
 
@@ -29,9 +29,9 @@ static void prvGcodeGetXYZE( char* pcStringToSearch, GcodeCoordinateTypeDef *pxC
 /*
  * This function tries to extract a g-code command from a string
  * returns a pointer to the extracted command
- * returns NULL when an invalid command is received
+ * returns NULL when an invalid command is received or when memory could not be allocated
  */
-GcodeCommandTypedef * pxGcodeExtractCommand( char* pcCommandString )
+GcodeCommandTypedef * pxGcodeExtractCommand( char* pcCommandString, GcodeCoordinateTypeDef xCurrentPosition )
 {
 GcodeCommandTypedef *pxNewCommand = NULL;
 char cFirstChar = '\0';
@@ -71,6 +71,13 @@ char cFirstChar = '\0';
 	/* Based on the type we need to read an additional coordinate */
 	if( gcodeNEEDCOORDINATE( pxNewCommand->type, pxNewCommand->code ) )
 	{
+		/* preload the coordinate in order to save the previous state when an axis is not specified.
+		 * example: current x:100 y:200 e:30 received x:50 y:40 -> e needs to stay 30.
+		 * Because calloc sets all memory locations to 0, requested e will be 0 -> incorrect
+		 * This is why we preload with the previous coordinate
+		 */
+		vGcodeCopyCo( &(pxNewCommand->position), xCurrentPosition );
+
 		prvGcodeGetXYZE( pcCommandString, &( pxNewCommand->position ) );
 	}
 
@@ -124,5 +131,17 @@ char * pcIndexOfChar = NULL;
 void vGcodeFree( GcodeCommandTypedef *pxCommandToFree )
 {
 	free( pxCommandToFree );
+}
+/*--------------------------------------------------------------------------*/
+
+/*
+ * This function copy's coordinates
+ */
+void vGcodeCopyCo( GcodeCoordinateTypeDef *pxDestination, GcodeCoordinateTypeDef xSource )
+{
+	pxDestination->x = xSource.x;
+	pxDestination->y = xSource.y;
+	pxDestination->z = xSource.z;
+	pxDestination->e = xSource.e;
 }
 

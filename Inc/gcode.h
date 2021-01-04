@@ -26,7 +26,8 @@ typedef struct {
 	GcodeCoordinateTypeDef position;
 }GcodeCommandTypedef;
 
-GcodeCommandTypedef * pxGcodeExtractCommand( char* pcCommandString );
+GcodeCommandTypedef * pxGcodeExtractCommand( char* pcCommandString, GcodeCoordinateTypeDef xCurrentPosition );
 void vGcodeFree( GcodeCommandTypedef *pxCommandToFree );
+void vGcodeCopyCo( GcodeCoordinateTypeDef *pxDestination, GcodeCoordinateTypeDef xSource );
 
 #endif /* GCODE_H_ */

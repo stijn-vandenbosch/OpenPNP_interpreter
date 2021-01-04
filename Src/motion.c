@@ -102,18 +102,6 @@ void vMotionStartMovement( void )
 /*--------------------------------------------------------------------------*/
 
 /*
- * This function copy's coordinates
- */
-void vMotionCopyCo( GcodeCoordinateTypeDef *pxDestination, GcodeCoordinateTypeDef xSource )
-{
-	pxDestination->x = xSource.x;
-	pxDestination->y = xSource.y;
-	pxDestination->z = xSource.z;
-	pxDestination->e = xSource.e;
-}
-/*--------------------------------------------------------------------------*/
-
-/*
  * Overwritten interrupt callback function
  * 4 Independent timer channels represent the 4 axis
  * In order to alter the step frequency, the PWM frequency needs to be changed
