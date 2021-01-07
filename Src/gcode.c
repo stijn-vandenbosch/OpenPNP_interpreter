@@ -63,9 +63,9 @@ char cFirstChar = '\0';
 #endif
 
 	/* Get the code which comes after the type */
-	sscanf( ( ++pcCommandString ), "%hd", &( pxNewCommand->code ) );
+	sscanf( ( ++pcCommandString ), "%hu", &( pxNewCommand->code ) );
 #ifdef DEBUG
-	printf( "Code: %hd\r\n", pxNewCommand->code );
+	printf( "Code: %hu\r\n", pxNewCommand->code );
 #endif
 
 	/* Based on the type we need to read an additional coordinate */

@@ -15,11 +15,11 @@
 #include "coms.h"
 
 /* Defines */
-#define DEBUG 					//Uncomment this line for debug information on the serial port
-#define PORT				23	//TCP port to listen on (telnet 23)
-#define BUFFERSIZE 			64	//Size of commandBuffer
-#define ENDOFCOMMANDCHAR	'\n'//Command delimiter
-#define CLOSECONNECTIONCHAR 'X'	//close connection requested
+#define DEBUG 							//Uncomment this line for debug information on the serial port
+#define comsPORT				23		//TCP port to listen on (telnet 23)
+#define comsBUFFERSIZE 			64		//Size of commandBuffer
+#define comsENDOFCOMMANDCHAR	'\n'	//Command delimiter
+#define comsCLOSECONNECTIONCHAR 'X'		//close connection requested
 
 /* Static function prototypes */
 #ifdef DEBUG
@@ -35,7 +35,7 @@ static void prvCloseConnection( struct tcp_pcb* pxPcbToClose );
 extern uint8_t IP_ADDRESS[4];		//initialized in lwip.c
 extern ip4_addr_t ipaddr;			//initialized in lwip.c
 #endif
-static char pcCommandBuffer[BUFFERSIZE];	//global buffer to store the received command
+static char pcCommandBuffer[comsBUFFERSIZE];	//global buffer to store the received command
 static const char *pcResponseString = "ok.\r\n";
 static void (*newDataCallback)(char *pcData) = NULL;
 static void (*newClientCallback)(char *pcIpString) = NULL;
@@ -54,7 +54,7 @@ err_t eBindStatus = ERR_VAL;
 
 	/* create the new listener */
 	pxMyTcpPcb = tcp_new();
-	eBindStatus = tcp_bind( pxMyTcpPcb, (ip_addr_t*)&ipaddr, (uint16_t)PORT );
+	eBindStatus = tcp_bind( pxMyTcpPcb, (ip_addr_t*)&ipaddr, (uint16_t)comsPORT );
 	pxMyTcpPcb = tcp_listen( pxMyTcpPcb );
 
 	/* specify callback for a new connection */
@@ -69,10 +69,10 @@ err_t eBindStatus = ERR_VAL;
 		printf( "*: bind failed because the PCB is not in a valid state\r\n" );
 		break;
 	case ERR_USE:
-		printf( "*: the port %hu is already in use\r\n", (uint16_t)PORT );
+		printf( "*: the port %hu is already in use\r\n", (uint16_t)comsPORT );
 		break;
 	case ERR_OK:
-		printf( "*: bound to port %hu on ", (uint16_t)PORT );
+		printf( "*: bound to port %hu on ", (uint16_t)comsPORT );
 		prvComsPrintMyIP();
 		printf( "\r\n" );
 		break;
@@ -166,7 +166,7 @@ char *pcCurrentPayload = NULL;
 		 * 'end of command' character before overwriting
 		 * the command buffer
 		 */
-		if( ( (char*)pxCurrentBuf->payload )[0] == ENDOFCOMMANDCHAR )
+		if( ( (char*)pxCurrentBuf->payload )[0] == comsENDOFCOMMANDCHAR )
 		{
 			/* Callback function for main */
 			newDataCallback( pcCommandBuffer );
@@ -182,7 +182,7 @@ char *pcCurrentPayload = NULL;
 			pcCurrentPayload = (char*)pxCurrentBuf->payload;
 
 			/* Loop trough the pbuf, j is the index for the current pbuf, i for the commandbuffer */
-			for( uint16_t j = 0; ( ( j < pxCurrentBuf->len ) && ( i < BUFFERSIZE ) ); i++, j++ )
+			for( uint16_t j = 0; ( ( j < pxCurrentBuf->len ) && ( i < comsBUFFERSIZE ) ); i++, j++ )
 			{
 				pcCommandBuffer[i] = pcCurrentPayload[j];
 			}
@@ -192,13 +192,13 @@ char *pcCurrentPayload = NULL;
 		}
 
 		/* The last one or first one */
-		for(  uint16_t j = 0; ( ( j < pxCurrentBuf->len ) && ( i < BUFFERSIZE ) ); i++, j++ )
+		for(  uint16_t j = 0; ( ( j < pxCurrentBuf->len ) && ( i < comsBUFFERSIZE ) ); i++, j++ )
 		{
 			pcCommandBuffer[i] = pcCurrentPayload[j];
 		}
 
 		/* Limit i to prevent an invalid index */
-		i = ( i == BUFFERSIZE ) ? ( BUFFERSIZE - 1 ) : ( i );
+		i = ( i == comsBUFFERSIZE ) ? ( comsBUFFERSIZE - 1 ) : ( i );
 
 		/* Make sure we have a string */
 		pcCommandBuffer[i] = '\0';
@@ -209,7 +209,7 @@ char *pcCurrentPayload = NULL;
 		/* Check for the 'close connection character'
 		 * this is for testing purposes
 		 */
-		if( pcCommandBuffer[0] == CLOSECONNECTIONCHAR )
+		if( pcCommandBuffer[0] == comsCLOSECONNECTIONCHAR )
 		{
 			/* close the connection */
 			prvCloseConnection( tpcb );

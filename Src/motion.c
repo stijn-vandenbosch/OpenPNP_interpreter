@@ -14,14 +14,14 @@
 #include "main.h"
 
 /* defines and macro's */
-#define STEPSPERMM 	50	//adjust this value as needed
+#define motionSTEPSPERMM 	50	//adjust this value as needed
 //#define REVERSE			//uncomment to reverse directions
-#define AXISCOUNT	4	//number of system axis
+#define motionAXISCOUNT	4	//number of system axis
 
 /* static function prototypes */
 
 /* static and external variables */
-static uint8_t ucAxisToComplete = AXISCOUNT;
+static uint8_t ucAxisToComplete = motionAXISCOUNT;
 static MotionStepsTypeDef xCalculatedSteps = {0,false,0,false,0,false,0,false};
 extern TIM_HandleTypeDef htim4;
 
@@ -35,36 +35,36 @@ void vMotionCalculateSteps( GcodeCoordinateTypeDef xStartPosition, GcodeCoordina
 	/* x-axis */
 	if( xMoveToCo.x > xStartPosition.x )
 	{
-		xCalculatedSteps.xSteps = ( xMoveToCo.x - xStartPosition.x ) * STEPSPERMM;
+		xCalculatedSteps.xSteps = ( xMoveToCo.x - xStartPosition.x ) * motionSTEPSPERMM;
 		xCalculatedSteps.xDir = 1;
 	}
 	else
 	{
-		xCalculatedSteps.xSteps = ( xStartPosition.x - xMoveToCo.x ) * STEPSPERMM;
+		xCalculatedSteps.xSteps = ( xStartPosition.x - xMoveToCo.x ) * motionSTEPSPERMM;
 		xCalculatedSteps.xDir = 0;
 	}
 
 	/* y-axis */
 	if( xMoveToCo.y > xStartPosition.y )
 	{
-		xCalculatedSteps.ySteps = ( xMoveToCo.y - xStartPosition.y ) * STEPSPERMM;
+		xCalculatedSteps.ySteps = ( xMoveToCo.y - xStartPosition.y ) * motionSTEPSPERMM;
 		xCalculatedSteps.yDir = 1;
 	}
 	else
 	{
-		xCalculatedSteps.ySteps = ( xStartPosition.y - xMoveToCo.y ) * STEPSPERMM;
+		xCalculatedSteps.ySteps = ( xStartPosition.y - xMoveToCo.y ) * motionSTEPSPERMM;
 		xCalculatedSteps.yDir = 0;
 	}
 
 	/* z-axis */
 	if( xMoveToCo.z > xStartPosition.z )
 	{
-		xCalculatedSteps.zSteps = ( xMoveToCo.z - xStartPosition.z ) * STEPSPERMM;
+		xCalculatedSteps.zSteps = ( xMoveToCo.z - xStartPosition.z ) * motionSTEPSPERMM;
 		xCalculatedSteps.zDir = 1;
 	}
 	else
 	{
-		xCalculatedSteps.zSteps = ( xStartPosition.z - xMoveToCo.z ) * STEPSPERMM;
+		xCalculatedSteps.zSteps = ( xStartPosition.z - xMoveToCo.z ) * motionSTEPSPERMM;
 		xCalculatedSteps.zDir = 0;
 	}
 
@@ -88,7 +88,7 @@ void vMotionStartMovement( void )
 	HAL_GPIO_WritePin( E_DIR_GPIO_Port, E_DIR_Pin, (GPIO_PinState)xCalculatedSteps.eDir );
 
 	/* Set the remaining axis to complete */
-	ucAxisToComplete = AXISCOUNT;
+	ucAxisToComplete = motionAXISCOUNT;
 
 	/* Activate the step channels */
 	HAL_TIM_PWM_Start_IT( &htim4, TIM_CHANNEL_1 );
