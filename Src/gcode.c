@@ -15,7 +15,7 @@
 #include "gcode.h"
 
 /* defines and macro's */
-#define DEBUG	//uncomment to enable debug
+//#define DEBUG	//uncomment to enable debug
 #define gcodeNEEDCOORDINATE( type, code ) \
 	( ( type == GCODE_POSITION ) && ( ( code == 0 ) || ( code == 1 ) ) )
 
@@ -34,7 +34,7 @@ static void prvGcodeGetXYZE( char* pcStringToSearch, GcodeCoordinateTypeDef *pxC
 GcodeCommandTypedef * pxGcodeExtractCommand( char* pcCommandString, GcodeCoordinateTypeDef xCurrentPosition )
 {
 GcodeCommandTypedef *pxNewCommand = NULL;
-char cFirstChar = '\0';
+char cFirstChar = pcCommandString[0];
 
 	/* Allocate memory for the new command */
 	pxNewCommand = (GcodeCommandTypedef *)calloc( 1, sizeof( GcodeCommandTypedef ) );
@@ -48,8 +48,7 @@ char cFirstChar = '\0';
 	}
 
 	/* Get the type */
-	cFirstChar = pcCommandString[0];
-	if( ( cFirstChar != GCODE_ACTUATE ) && ( cFirstChar != GCODE_POSITION ) )
+	if( ( (GcodeTypeTypeDef)cFirstChar != GCODE_ACTUATE ) && ( (GcodeTypeTypeDef)cFirstChar != GCODE_POSITION ) )
 	{
 #ifdef DEBUG
 		printf( "Invalid type %c\r\n", cFirstChar);

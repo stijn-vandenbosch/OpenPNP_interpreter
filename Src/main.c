@@ -178,8 +178,9 @@ int main(void)
 
   /* LCD Initialization */
     BSP_LCD_Init();
-    //TODO: find out what this does
+    //Init the display controller layers (0 and 1)
     BSP_LCD_LayerDefaultInit( 1, LCD_FB_START_ADDRESS );
+    //start address of frame buffer 0 = display size * (4bytes/pixel) further in memory
     BSP_LCD_LayerDefaultInit( 0, LCD_FB_START_ADDRESS+(480*272*4) );
 
     /* Enable the LCD */
@@ -193,7 +194,7 @@ int main(void)
     /* Select the front layer */
     BSP_LCD_SelectLayer( 1 );
     /* Clear the foreground Layer */
-    BSP_LCD_Clear( LCD_COLOR_WHITE);
+    BSP_LCD_Clear( LCD_COLOR_WHITE );
 
     /* Display the logo */
     WDA_LCD_DrawBitmap( LOGO_DATA, 10, 5, LOGO_DATA_X_PIXEL, LOGO_DATA_Y_PIXEL, LOGO_DATA_FORMAT );

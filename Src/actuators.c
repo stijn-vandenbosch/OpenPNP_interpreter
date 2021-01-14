@@ -41,9 +41,9 @@ static ButnStateTypeDef *pxActuatorVacuumButton = NULL;
 /*
  * This function handles the actuation
  */
-void vActuatorsHandle( uint16_t code )
+void vActuatorsHandle( uint16_t _code )
 {
-	switch(code)
+	switch(_code)
 	{
 	case actuatorsLIGHT1_ON:
 		HAL_GPIO_WritePin( LIGHT1_GPIO_Port, LIGHT1_Pin, GPIO_PIN_SET );
@@ -102,9 +102,9 @@ void vActuatorsHandle( uint16_t code )
 /*
  * This function sets pointer to the buttons on screen
  */
-void vActuatorsSetButtonHandler( ButnStateTypeDef *pxButtonHandle, ActuatorsEventTypeDef eEvent )
+void vActuatorsSetButtonHandler( ButnStateTypeDef *pxButtonHandle, ActuatorsEventTypeDef _eEvent )
 {
-	switch( eEvent )
+	switch( _eEvent )
 	{
 	case ACTUATORS_LIGHTEVENT:
 		pxActuatorLightButton = pxButtonHandle;

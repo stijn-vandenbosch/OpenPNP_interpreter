@@ -15,7 +15,7 @@
 #include "coms.h"
 
 /* Defines */
-#define DEBUG 							//Uncomment this line for debug information on the serial port
+//#define DEBUG 							//Uncomment this line for debug information on the serial port
 #define comsPORT				23		//TCP port to listen on (telnet 23)
 #define comsBUFFERSIZE 			64		//Size of commandBuffer
 #define comsENDOFCOMMANDCHAR	'\n'	//Command delimiter
@@ -33,8 +33,8 @@ static void prvCloseConnection( struct tcp_pcb* pxPcbToClose );
 /* Static and external variables */
 #ifdef DEBUG
 extern uint8_t IP_ADDRESS[4];		//initialized in lwip.c
-extern ip4_addr_t ipaddr;			//initialized in lwip.c
 #endif
+extern ip4_addr_t ipaddr;			//initialized in lwip.cf
 static char pcCommandBuffer[comsBUFFERSIZE];	//global buffer to store the received command
 static const char *pcResponseString = "ok.\r\n";
 static void (*newDataCallback)(char *pcData) = NULL;
@@ -109,7 +109,7 @@ char pcIpString[64] = "";
 	tcp_recv( newpcb, prvComsDataReceivedCallback);
 
 	/* construct the 'ipstring' of the remote host and call the newClientCallback */
-	sprintf( pcIpString, "%hd.%hd.%hd.%hd", ip4_addr1_16_val( newpcb->remote_ip ), ip4_addr2_16_val( newpcb->remote_ip ), ip4_addr3_16_val( newpcb->remote_ip ), ip4_addr4_16_val( newpcb->remote_ip ) );
+	sprintf( pcIpString, "%hu.%hu.%hu.%hu", ip4_addr1_16_val( newpcb->remote_ip ), ip4_addr2_16_val( newpcb->remote_ip ), ip4_addr3_16_val( newpcb->remote_ip ), ip4_addr4_16_val( newpcb->remote_ip ) );
 	newClientCallback( pcIpString );
 
 	return ERR_OK;
@@ -145,8 +145,10 @@ static err_t prvComsDataReceivedCallback( void *arg, struct tcp_pcb *tpcb, struc
 {
 uint16_t i = 0;
 struct pbuf* pxCurrentBuf = NULL;
-uint16_t usTotalLength = 0;
 char *pcCurrentPayload = NULL;
+#ifdef DEBUG
+uint16_t usTotalLength = 0;
+#endif
 
 	LWIP_UNUSED_ARG( arg );
 
@@ -157,7 +159,9 @@ char *pcCurrentPayload = NULL;
 
 		/* Payload handling starts here */
 		pcCurrentPayload = (char*)p->payload;
+#ifdef DEBUG
 		usTotalLength = p->tot_len;	//store the total length
+#endif
 
 		pxCurrentBuf = p;			//start with first pbuf
 
@@ -165,14 +169,22 @@ char *pcCurrentPayload = NULL;
 		 * Check if the first received character is the
 		 * 'end of command' character before overwriting
 		 * the command buffer
+		 * openPNP sends data first and then \n in a new packet -> the end_of_command_character
 		 */
 		if( ( (char*)pxCurrentBuf->payload )[0] == comsENDOFCOMMANDCHAR )
 		{
 			/* Callback function for main */
 			newDataCallback( pcCommandBuffer );
 
+			/* check for space in the send queue */
+			while( tcp_sndbuf( tpcb ) < strlen( pcResponseString ) )
+			{
+				continue;
+			}
+
 			/* Write a response, no need to copy, responseString is a constant */
 			tcp_write( tpcb, pcResponseString, strlen( pcResponseString ), 0);
+			tcp_output( tpcb );	//output now
 		}
 
 		/* Loop trough all the pbuf */

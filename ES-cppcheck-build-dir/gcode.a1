@@ -1,20 +1,40 @@
 <?xml version="1.0"?>
-<analyzerinfo checksum="933970092">
-        <error id="redundantInitialization" severity="style" msg="Redundant initialization for &apos;cFirstChar&apos;. The initialized value is overwritten before it is read." verbose="Redundant initialization for &apos;cFirstChar&apos;. The initialized value is overwritten before it is read." cwe="563" hash="8883412658744105165">
-            <location file0="Src\gcode.c" file="Src\gcode.c" line="51" column="13" info="cFirstChar is overwritten"/>
-            <location file0="Src\gcode.c" file="Src\gcode.c" line="37" column="17" info="cFirstChar is initialized"/>
-            <symbol>cFirstChar</symbol>
-        </error>
+<analyzerinfo checksum="2145115399">
+  <FileInfo check="Bounds checking">
+    <array-index>
+    <unsafe-usage my-id="Src/gcode.c:34:23" my-argnr="1" my-argname="pcCommandString" file="Src/gcode.c" line="37" col="19" value="0"/>
+    </array-index>
+  </FileInfo>
   <FileInfo check="Null pointer">
-    <unsafe-usage my-id="Src/gcode.c:23:13" my-argnr="1" my-argname="pcStringToSearch" file="Src/gcode.c" line="91" col="26" value="0"/>
+    <unsafe-usage my-id="Src/gcode.c:34:23" my-argnr="1" my-argname="pcCommandString" file="Src/gcode.c" line="37" col="19" value="0"/>
+    <unsafe-usage my-id="Src/gcode.c:23:13" my-argnr="1" my-argname="pcStringToSearch" file="Src/gcode.c" line="97" col="26" value="0"/>
+    <unsafe-usage my-id="Src/gcode.c:139:6" my-argnr="1" my-argname="pxDestination" file="Src/gcode.c" line="141" col="2" value="0"/>
   </FileInfo>
   <FileInfo check="Uninitialized variables">
-    <unsafe-usage my-id="Src/gcode.c:23:13" my-argnr="1" my-argname="pcStringToSearch" file="Src/gcode.c" line="91" col="26" value="0"/>
+    <unsafe-usage my-id="Src/gcode.c:23:13" my-argnr="1" my-argname="pcStringToSearch" file="Src/gcode.c" line="97" col="26" value="0"/>
+  </FileInfo>
+  <FileInfo check="Bounds checking">
+    <array-index>
+    <unsafe-usage my-id="Src/gcode.c:34:23" my-argnr="1" my-argname="pcCommandString" file="Src/gcode.c" line="37" col="19" value="0"/>
+    </array-index>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="Src/gcode.c:34:23" my-argnr="1" my-argname="pcCommandString" file="Src/gcode.c" line="37" col="19" value="0"/>
+    <unsafe-usage my-id="Src/gcode.c:23:13" my-argnr="1" my-argname="pcStringToSearch" file="Src/gcode.c" line="97" col="26" value="0"/>
+    <unsafe-usage my-id="Src/gcode.c:139:6" my-argnr="1" my-argname="pxDestination" file="Src/gcode.c" line="141" col="2" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="Src/gcode.c:23:13" my-argnr="1" my-argname="pcStringToSearch" file="Src/gcode.c" line="97" col="26" value="0"/>
   </FileInfo>
   <FileInfo check="CheckUnusedFunctions">
     <functiondecl functionName="pxGcodeExtractCommand" lineNumber="34"/>
-    <functiondecl functionName="prvGcodeGetXYZE" lineNumber="87"/>
-    <functiondecl functionName="vGcodeFree" lineNumber="124"/>
+    <functiondecl functionName="prvGcodeGetXYZE" lineNumber="93"/>
+    <functiondecl functionName="vGcodeFree" lineNumber="130"/>
+    <functiondecl functionName="vGcodeCopyCo" lineNumber="139"/>
+    <functiondecl functionName="pxGcodeExtractCommand" lineNumber="34"/>
+    <functiondecl functionName="prvGcodeGetXYZE" lineNumber="93"/>
+    <functiondecl functionName="vGcodeFree" lineNumber="130"/>
+    <functiondecl functionName="vGcodeCopyCo" lineNumber="139"/>
     <functioncall functionName="GcodeCommandTypedef"/>
     <functioncall functionName="GcodeTypeTypeDef"/>
     <functioncall functionName="NULL"/>
@@ -35,7 +55,9 @@
     <functioncall functionName="sizeof"/>
     <functioncall functionName="sscanf"/>
     <functioncall functionName="strchr"/>
+    <functioncall functionName="vGcodeCopyCo"/>
     <functioncall functionName="x"/>
+    <functioncall functionName="xCurrentPosition"/>
     <functioncall functionName="y"/>
     <functioncall functionName="z"/>
   </FileInfo>

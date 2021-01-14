@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<analyzerinfo checksum="805955368">
+<analyzerinfo checksum="340998329">
   <FileInfo check="CheckUnusedFunctions">
     <functiondecl functionName="vActuatorsHandle" lineNumber="44"/>
     <functiondecl functionName="vActuatorsSetButtonHandler" lineNumber="105"/>
@@ -19,10 +19,10 @@
     <functioncall functionName="PUMP_Pin"/>
     <functioncall functionName="VACUUM_GPIO_Port"/>
     <functioncall functionName="VACUUM_Pin"/>
+    <functioncall functionName="_code"/>
+    <functioncall functionName="_eEvent"/>
     <functioncall functionName="break"/>
-    <functioncall functionName="code"/>
     <functioncall functionName="default"/>
-    <functioncall functionName="eEvent"/>
     <functioncall functionName="false"/>
     <functioncall functionName="pxButtonHandle"/>
     <functioncall functionName="switch"/>
